@@ -1,6 +1,169 @@
 <!DOCTYPE html>
+<html lang="he">
 
-<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מטפלת להתפתחות תינוקות</title>
+    <style>
+        /* כללי עיצוב */
+        body {
+            background: linear-gradient(45deg, #ffccff, #ff99cc);
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: black;
+            line-height: 1.5;
+            padding: 20px;
+        }
 
-<h1>Kuchcha site</h1>
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        h3 {
+            text-align: right;
+            font-style: oblique;
+        }
+
+        .about-section {
+            display: flex;
+            align-items: flex-start;
+            border: 2px solid #ff6699; /* ורוד כהה */
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #ffe6f2; /* ורוד בהיר */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section img {
+            max-width: 250px;
+            max-height: 250px;
+            margin-left: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section p {
+            text-align: right;
+            margin: 10px 0;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .form-container form {
+            text-align: center;
+            width: 100%;
+            background-color: #ffe6f2; /* ורוד בהיר */
+            padding: 15px;
+            border: 2px solid #ff6699; /* ורוד כהה */
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container form label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .form-container form input {
+            margin: 5px 0 15px;
+            padding: 8px;
+            width: 95%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-align: right;
+        }
+
+        .form-container form button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: palevioletred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .form-container form button:hover {
+            background-color: darkviolet;
+        }
+
+        /* התאמות להדפסה */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+                margin: 0;
+                font-size: 12px;
+            }
+
+            .form-container img {
+                display: none;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+
+            .form-container form {
+                box-shadow: none;
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>זוהר אלטמן - מטפלת התפתחותית</h1>
+
+    <div class="about-section">
+        <img src="ZoharMyLove.jpeg" alt="תמונה של המטפלת">
+        <p>
+            שמי [הכניסי את שמך], ואני מטפלת מוסמכת המתמחה בהתפתחות תינוקות. מזה [מספר שנות ניסיון] שנים אני מלווה הורים ותינוקות במסע המרגש של תחילת החיים, מתוך מטרה לקדם התפתחות בריאה, חווייתית ומשמעותית.<br>
+            :ברשותי ידע נרחב בתחומים כמו<br>
+            .עידוד שלבי ההתפתחות המוטורית, החושית והרגשית<br>
+            .זיהוי צרכים ייחודיים של כל תינוק והתאמת גישה אישית<br>
+            .הדרכת הורים במתן כלים מעשיים להתמודדות עם אתגרי הגדילה<br>
+            .אני מאמינה שתינוקות גדלים ומתפתחים בצורה הטובה ביותר כשהם זוכים לסביבה תומכת, מעודדת ואוהבת. לכן, המטרה שלי היא להעניק לכם, ההורים, את הידע והביטחון להוביל את ילדכם קדימה.<br>
+            .אני מציעה מגוון שירותים, כולל מפגשים אישיים, סדנאות קבוצתיות וליווי בבית. כל מפגש מתוכנן בקפידה מתוך רצון להעניק חוויה חיובית ומחזקת הן לכם והן לתינוקכם.<br>
+            .אני מזמינה אתכם להצטרף אליי וליצור יחד את הבסיס להתפתחות בריאה ומשמחת<br>
+            .לפרטים נוספים וקביעת פגישה, ניתן ליצור קשר בטלפון [מספר טלפון] או במייל [כתובת מייל]
+        </p>
+    </div>
+
+    <h2>השארת פרטים ליצירת קשר</h2>
+    <div class="form-container">
+        <form>
+            <label for="name">שם:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">מספר פלאפון:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">דואר אלקטרוני:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="child-age">גיל הילד:</label>
+            <input type="number" id="child-age" name="child-age" min="0" max="18" required>
+
+            <button type="submit">שלח</button>
+        </form>
+    </div>
+</body>
+
 </html>
