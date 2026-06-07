@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shlomi Zberlo — Game Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #050810;
+    --bg2: #080d1a;
+    --panel: #0c1220;
+    --border: #1a2a4a;
+    --accent: #00f0ff;
+    --accent2: #ff4060;
+    --accent3: #7b2fff;
+    --text: #c8d8f0;
+    --muted: #4a6080;
+    --glow: 0 0 20px rgba(0,240,255,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* GRID BG */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5,8,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-shadow: var(--glow);
+  }
+
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); text-shadow: var(--glow); }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 120px 10vw 80px;
+    overflow: hidden;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(0,240,255,0.4);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-name span { color: var(--accent); }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    font-weight: 400;
+    color: var(--accent2);
+    letter-spacing: 4px;
+    margin-top: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-tagline {
+    max-width: 500px;
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 28px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: var(--glow);
+  }
+  .btn-solid {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .btn-solid:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .orb1 {
+    width: 500px; height: 500px;
+    background: rgba(0,240,255,0.06);
+    top: -100px; right: -100px;
+    animation: float1 8s ease-in-out infinite;
+  }
+  .orb2 {
+    width: 300px; height: 300px;
+    background: rgba(123,47,255,0.08);
+    bottom: 100px; left: 20%;
+    animation: float2 10s ease-in-out infinite;
+  }
+
+  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,30px)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* SECTION WRAPPER */
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 48px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: var(--glow);
+  }
+
+  /* ABOUT */
+  #about { background: var(--bg2); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-text p { color: var(--text); margin-bottom: 16px; font-size: 1.05rem; }
+  .about-text p strong { color: var(--accent); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 20px;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--bg); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.3s;
+  }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .skill-card:hover::before { height: 100%; }
+
+  .skill-icon {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+
+  .skill-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .skill-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg2); }
+
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent3), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding: 24px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .timeline-item:hover { border-color: var(--accent); }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -39px;
+    top: 28px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+  .job-title { font-family: 'Orbitron', monospace; font-size: 0.95rem; color: #fff; font-weight: 700; }
+  .job-company { color: var(--accent); font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; }
+  .job-date { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
+  .job-location { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
+  .job-desc { font-size: 0.95rem; color: var(--text); }
+  .job-desc ul { margin-top: 8px; padding-left: 16px; }
+  .job-desc li { margin-bottom: 4px; color: var(--muted); font-size: 0.9rem; }
+
+  /* VIDEOS */
+  #videos { background: var(--bg); }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px;
+  }
+
+  .video-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .video-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 40px rgba(0,240,255,0.1); }
+
+  .video-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .video-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    background: rgba(0,240,255,0.08);
+    padding: 4px 10px;
+    border: 1px solid rgba(0,240,255,0.2);
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+  }
+  .video-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .video-footer { padding: 14px 20px; }
+  .video-title { font-family: 'Orbitron', monospace; font-size: 0.8rem; color: #fff; margin-bottom: 4px; }
+  .video-sub { font-size: 0.85rem; color: var(--muted); }
+
+  /* ADD VIDEO FORM */
+  .add-video-section {
+    margin-top: 40px;
+    background: var(--panel);
+    border: 1px dashed var(--border);
+    padding: 32px;
+    text-align: center;
+  }
+
+  .add-video-section h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 12px;
+    max-width: 700px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .input-field {
+    flex: 1;
+    min-width: 200px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-field:focus { border-color: var(--accent); }
+  .input-field::placeholder { color: var(--muted); }
+
+  /* UNITY GAME */
+  #game { background: var(--bg2); }
+
+  .game-placeholder {
+    background: var(--panel);
+    border: 2px dashed var(--border);
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .game-placeholder:hover { border-color: var(--accent3); }
+
+  .game-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(123,47,255,0.06) 0%, transparent 70%);
+  }
+
+  #unity-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+  #unity-container iframe {
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .game-icon { font-size: 4rem; margin-bottom: 20px; opacity: 0.4; }
+  .game-upload-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .game-sub { font-size: 0.9rem; color: var(--muted); opacity: 0.6; margin-bottom: 24px; }
+
+  .game-input-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 20px;
+    max-width: 600px;
+  }
+
+  /* CONTACT */
+  #contact { background: var(--bg); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .contact-item:hover { border-color: var(--accent); }
+
+  .contact-icon { font-size: 1.2rem; }
+  .contact-label { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 2px; }
+  .contact-value { font-size: 0.95rem; color: var(--text); }
+
+  .contact-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .link-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .link-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .contact-right {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+
+  .contact-right h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .form-input, .form-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-textarea { min-height: 100px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 32px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+
+  footer span { color: var(--accent); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    padding: 14px 24px;
+    z-index: 9000;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    box-shadow: var(--glow);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 6vw 60px; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .video-grid { grid-template-columns: 1fr; }
+    .section-inner { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SZ.DEV</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#game">Play Game</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-eyebrow">// GAME DEVELOPER & UNITY ENGINEER</div>
+  <h1 class="hero-name">SHLOMI<br /><span>ZBERLO</span></h1>
+  <div class="hero-title">AGE 27 · HOLON, ISRAEL</div>
+  <p class="hero-tagline">Crafting immersive gameplay systems and combat mechanics in Unity — building worlds one line of C# at a time.</p>
+  <div class="hero-cta">
+    <a href="#videos" class="btn btn-solid">Watch My Work</a>
+    <a href="#game" class="btn">Play My Game</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">// 01 — ABOUT ME</div>
+    <h2 class="section-title">WHO I AM</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm <strong>Shlomi Zberlo</strong>, a 27-year-old game developer based in Holon, Israel. My passion is building engaging, polished gameplay experiences using <strong>Unity</strong> — from tight combat mechanics to fluid animation systems.</p>
+        <p>With <strong>3 years of C# experience</strong> and a solid understanding of Unity's architecture, I've independently built projects that showcase real game-feel: responsive controls, animation-driven states, and well-structured code.</p>
+        <p>Beyond code, I bring <strong>strong problem-solving skills</strong> and a technical background in IT and customer systems — which means I ship things that actually work.</p>
+        <a href="https://github.com" target="_blank" class="btn" style="display:inline-block; margin-top:16px;">GitHub Profile ↗</a>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">YEARS C#</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1+</div>
+          <div class="stat-label">YEARS JAVA</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">27</div>
+          <div class="stat-label">AGE</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">HOURS IN UNITY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">// 02 — SKILLS</div>
+    <h2 class="section-title">TECH STACK</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">🎮</div>
+        <div class="skill-name">UNITY ENGINE</div>
+        <div class="skill-desc">Deep experience with Unity's core systems — physics, animation state machines, scene management, and editor tooling.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-name">C# PROGRAMMING</div>
+        <div class="skill-desc">3 years writing clean, structured C# for gameplay systems, combat mechanics, AI logic, and more.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">☕</div>
+        <div class="skill-name">JAVA</div>
+        <div class="skill-desc">1 year of Java experience, including coursework at The Open University of Israel.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎬</div>
+        <div class="skill-name">UNITY ANIMATOR</div>
+        <div class="skill-desc">Code-driven animation control using Animator parameters, blend trees, and state transitions for dynamic character movement.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📱</div>
+        <div class="skill-name">MOBILE & HARDWARE</div>
+        <div class="skill-desc">Strong mobile platform knowledge — device configs, performance optimization, and cross-platform support.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔧</div>
+        <div class="skill-name">TECHNICAL SUPPORT</div>
+        <div class="skill-desc">IT experience with Active Directory, hardware/software troubleshooting, and system operations.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">// 03 — EXPERIENCE</div>
+    <h2 class="section-title">CAREER</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="job-header">
+          <div>
+            <div class="job-title">IT Support Specialist</div>
+            <div class="job-company">Mgroup</div>
+          </div>
+          <div class="job-date">JAN 2024 – PRESENT</div>
+        </div>
+        <div class="job-location">📍 Holon, Israel</div>
+        <div class="job-desc">Active Directory user management and general technical support. Troubleshooting hardware and software issues, ensuring smooth day-to-day system operations.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="job-header">
+          <div>
+            <div class="job-title">Customer Service & Technical Support</div>
+            <div class="job-company">Cardcom</div>
+          </div>
+          <div class="job-date">NOV 2023 – NOV 2024</div>
+        </div>
+        <div class="job-location">📍 Holon, Israel</div>
+        <div class="job-desc">
+          <ul>
+            <li>Handled inbound/outbound support calls</li>
+            <li>Resolved integration issues with external websites</li>
+            <li>Worked with CRM systems (Zendesk)</li>
+            <li>Proficient in full Cardcom system toolset</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="job-header">
+          <div>
+            <div class="job-title">Senior Representative</div>
+            <div class="job-company">One Teldor</div>
+          </div>
+          <div class="job-date">AUG 2022 – JUL 2023</div>
+        </div>
+        <div class="job-location">📍 Holon, Israel</div>
+        <div class="job-desc">
+          <ul>
+            <li>Handled critical escalation calls</li>
+            <li>Supported and mentored other representatives</li>
+            <li>Supported Ministry of Education systems (payroll, matriculation)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="section-inner">
+    <div class="section-label">// 04 — GAMEPLAY</div>
+    <h2 class="section-title">VIDEOS</h2>
+
+    <div class="video-grid" id="videoGrid">
+      <!-- Initial video -->
+      <div class="video-card">
+        <div class="video-header">
+          <div>
+            <div class="video-title" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;">Combat Mechanics Demo</div>
+            <div style="font-size:0.8rem;color:var(--muted);margin-top:2px;">Unity · C# · November 2025</div>
+          </div>
+          <div class="video-tag">GAMEPLAY</div>
+        </div>
+        <div class="video-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/igOt_jqUFLk"
+            title="Shlomi Zberlo — Combat Mechanics"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-footer">
+          <div class="video-sub">Gameplay clip showcasing combat mechanics and animation systems built in Unity.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Video -->
+    <div class="add-video-section">
+      <h3>+ ADD A NEW VIDEO</h3>
+      <div class="input-row">
+        <input type="text" class="input-field" id="videoUrl" placeholder="YouTube URL (e.g. https://youtu.be/...)" />
+        <input type="text" class="input-field" id="videoTitle" placeholder="Video title" style="flex:0.6" />
+        <button class="btn btn-solid" onclick="addVideo()">ADD</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UNITY GAME -->
+<section id="game">
+  <div class="section-inner">
+    <div class="section-label">// 05 — PLAY</div>
+    <h2 class="section-title">UNITY GAME</h2>
+
+    <div class="game-placeholder" id="gamePlaceholder" style="min-height:480px;">
+      <div id="unity-container"></div>
+      <div id="gameUploadUI" style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;text-align:center;">
+        <div class="game-icon">🕹️</div>
+        <div class="game-upload-text">EMBED YOUR UNITY WEBGL GAME</div>
+        <div class="game-sub">Export your Unity project as WebGL and host it, then paste the URL below</div>
+        <div class="game-input-row">
+          <input type="text" class="input-field" id="gameUrl" placeholder="Unity WebGL game URL (https://...)" style="min-width:300px;" />
+          <button class="btn btn-solid" onclick="loadGame()">LOAD GAME</button>
+        </div>
+        <p style="margin-top:16px; font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--muted); letter-spacing:1px;">
+          TIP: Export from Unity → Build Settings → WebGL → Host on itch.io or GitHub Pages
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">// 06 — CONTACT</div>
+    <h2 class="section-title">GET IN TOUCH</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>CONTACT INFO</h3>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">EMAIL</div>
+            <div class="contact-value">shlomi1x1x@gmail.com</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-label">PHONE</div>
+            <div class="contact-value">053-470-9250</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">LOCATION</div>
+            <div class="contact-value">Holon, Har Hzofim 25, Israel</div>
+          </div>
+        </div>
+        <div class="contact-links">
+          <a href="https://github.com" target="_blank" class="link-btn">GitHub ↗</a>
+          <a href="mailto:shlomi1x1x@gmail.com" class="link-btn">Email Me ↗</a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <h3>SEND A MESSAGE</h3>
+        <div class="form-group">
+          <label class="form-label">YOUR NAME</label>
+          <input type="text" class="form-input" placeholder="John Doe" id="contactName" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">EMAIL</label>
+          <input type="email" class="form-input" placeholder="you@company.com" id="contactEmail" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">MESSAGE</label>
+          <textarea class="form-textarea" placeholder="Tell me about your project..." id="contactMsg"></textarea>
+        </div>
+        <button class="btn btn-solid" style="width:100%;" onclick="sendMessage()">SEND MESSAGE</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>SHLOMI ZBERLO</span> — GAME DEVELOPER · HOLON, ISRAEL</p>
+  <p style="margin-top:8px;font-size:0.6rem;">BUILT WITH PASSION · POWERED BY UNITY & C#</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---- VIDEO ADD ----
+  function getYouTubeId(url) {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?\s]+)/);
+    return match ? match[1] : null;
+  }
+
+  function addVideo() {
+    const url = document.getElementById('videoUrl').value.trim();
+    const title = document.getElementById('videoTitle').value.trim() || 'Gameplay Clip';
+    const id = getYouTubeId(url);
+    if (!id) { showToast('⚠ INVALID YOUTUBE URL'); return; }
+
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.innerHTML = `
+      <div class="video-header">
+        <div>
+          <div class="video-title" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;">${title}</div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-top:2px;">Unity · C#</div>
+        </div>
+        <div class="video-tag">GAMEPLAY</div>
+      </div>
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/${id}" title="${title}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+      <div class="video-footer"><div class="video-sub">Added gameplay clip.</div></div>
+    `;
+    document.getElementById('videoGrid').appendChild(card);
+    document.getElementById('videoUrl').value = '';
+    document.getElementById('videoTitle').value = '';
+    showToast('✓ VIDEO ADDED');
+  }
+
+  // ---- GAME EMBED ----
+  function loadGame() {
+    const url = document.getElementById('gameUrl').value.trim();
+    if (!url.startsWith('http')) { showToast('⚠ ENTER A VALID GAME URL'); return; }
+    const container = document.getElementById('unity-container');
+    container.innerHTML = `<iframe src="${url}" allowfullscreen style="width:100%;height:100%;border:none;"></iframe>`;
+    container.style.display = 'block';
+    document.getElementById('gameUploadUI').style.display = 'none';
+    document.getElementById('gamePlaceholder').style.minHeight = '600px';
+    showToast('✓ GAME LOADED');
+  }
+
+  // ---- CONTACT ----
+  function sendMessage() {
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const msg = document.getElementById('contactMsg').value.trim();
+    if (!name || !email || !msg) { showToast('⚠ FILL ALL FIELDS'); return; }
+    const mailto = `mailto:shlomi1x1x@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(msg + '\n\nFrom: ' + email)}`;
+    window.location.href = mailto;
+    showToast('✓ OPENING MAIL CLIENT');
+  }
+
+  // ---- TOAST ----
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ---- SCROLL ANIMATIONS ----
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.skill-card, .timeline-item, .video-card, .stat-card, .contact-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
