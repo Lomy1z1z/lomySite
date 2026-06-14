@@ -476,47 +476,141 @@
   /* UNITY GAME */
   #game { background: var(--bg2); }
 
-  .game-placeholder {
-    background: var(--panel);
-    border: 2px dashed var(--border);
-    min-height: 480px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  .game-wrapper {
     position: relative;
+    background: #000;
+    border: 1px solid var(--border);
     overflow: hidden;
-    transition: border-color 0.3s;
-  }
-  .game-placeholder:hover { border-color: var(--accent3); }
-
-  .game-placeholder::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, rgba(123,47,255,0.06) 0%, transparent 70%);
   }
 
-  #unity-container {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
-    display: none;
-  }
-  #unity-container iframe {
-    width: 100%; height: 100%;
-    border: none;
+  .game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
   }
 
-  .game-icon { font-size: 4rem; margin-bottom: 20px; opacity: 0.4; }
-  .game-upload-text {
+  .game-header-title {
     font-family: 'Orbitron', monospace;
-    font-size: 1rem;
-    color: var(--muted);
-    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: #fff;
+    letter-spacing: 2px;
   }
-  .game-sub { font-size: 0.9rem; color: var(--muted); opacity: 0.6; margin-bottom: 24px; }
+
+  .game-header-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--accent3);
+    background: rgba(123,47,255,0.1);
+    padding: 4px 10px;
+    border: 1px solid rgba(123,47,255,0.3);
+  }
+
+  #unity-game-area {
+    position: relative;
+    width: 100%;
+    padding-bottom: 62.5%; /* 960x600 ratio */
+    background: #231F20;
+  }
+
+  #unity-game-area canvas,
+  #unity-game-area #unity-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #unity-loading-bar {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    text-align: center;
+    z-index: 10;
+  }
+
+  #unity-logo {
+    width: 154px; height: 130px;
+    background: url('Build/unity-logo-dark.png') no-repeat center;
+    background-size: contain;
+    margin: 0 auto;
+  }
+
+  #unity-progress-bar-empty {
+    width: 141px; height: 18px;
+    margin: 10px auto 0;
+    background: url('Build/progress-bar-empty-dark.png') no-repeat center;
+    background-size: contain;
+    position: relative;
+  }
+
+  #unity-progress-bar-full {
+    width: 0%;
+    height: 100%;
+    background: url('Build/progress-bar-full-dark.png') no-repeat left center;
+    background-size: auto 100%;
+  }
+
+  #unity-warning {
+    position: absolute;
+    left: 50%; top: 5%;
+    transform: translateX(-50%);
+    background: white;
+    color: #000;
+    padding: 10px;
+    display: none;
+    z-index: 20;
+    font-size: 0.85rem;
+  }
+
+  .game-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+  }
+
+  .game-footer-logo {
+    width: 80px; height: 30px;
+    background: url('Build/unity-logo-title-footer.png') no-repeat left center;
+    background-size: contain;
+    opacity: 0.6;
+  }
+
+  .game-footer-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  #fullscreen-btn {
+    width: 34px; height: 34px;
+    background: url('Build/fullscreen-button.png') no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    filter: invert(1) sepia(1) saturate(3) hue-rotate(160deg);
+  }
+  #fullscreen-btn:hover { opacity: 1; }
+
+  .game-note {
+    margin-top: 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-align: center;
+  }
 
   .game-input-row {
     display: flex;
@@ -873,26 +967,90 @@
 <section id="game">
   <div class="section-inner">
     <div class="section-label">// 05 — PLAY</div>
-    <h2 class="section-title">UNITY GAME</h2>
+    <h2 class="section-title">PLAY MY GAME</h2>
 
-    <div class="game-placeholder" id="gamePlaceholder" style="min-height:480px;">
-      <div id="unity-container"></div>
-      <div id="gameUploadUI" style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;text-align:center;">
-        <div class="game-icon">🕹️</div>
-        <div class="game-upload-text">EMBED YOUR UNITY WEBGL GAME</div>
-        <div class="game-sub">Export your Unity project as WebGL and host it, then paste the URL below</div>
-        <div class="game-input-row">
-          <input type="text" class="input-field" id="gameUrl" placeholder="Unity WebGL game URL (https://...)" style="min-width:300px;" />
-          <button class="btn btn-solid" onclick="loadGame()">LOAD GAME</button>
+    <div class="game-wrapper">
+      <div class="game-header">
+        <div class="game-header-title">WHITEMAN — COMBAT DEMO</div>
+        <div class="game-header-tag">UNITY WEBGL</div>
+      </div>
+
+      <div id="unity-game-area">
+        <canvas id="unity-canvas" tabindex="-1"></canvas>
+        <div id="unity-loading-bar">
+          <div id="unity-logo"></div>
+          <div id="unity-progress-bar-empty">
+            <div id="unity-progress-bar-full"></div>
+          </div>
         </div>
-        <p style="margin-top:16px; font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--muted); letter-spacing:1px;">
-          TIP: Export from Unity → Build Settings → WebGL → Host on itch.io or GitHub Pages
-        </p>
+        <div id="unity-warning"></div>
+      </div>
+
+      <div class="game-footer">
+        <div class="game-footer-logo"></div>
+        <div class="game-footer-name">WHITEMAN · v1.0</div>
+        <button id="fullscreen-btn" title="Fullscreen"></button>
       </div>
     </div>
 
+    <p class="game-note">🖱️ CLICK ON THE GAME FIRST TO CAPTURE INPUT &nbsp;|&nbsp; USE FULLSCREEN BUTTON FOR BEST EXPERIENCE</p>
   </div>
 </section>
+
+<script>
+  // Unity WebGL loader
+  (function() {
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/Test12345.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/Test12345.data.br",
+      frameworkUrl: buildUrl + "/Test12345.framework.js.br",
+      codeUrl: buildUrl + "/Test12345.wasm.br",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "WhiteMan",
+      productVersion: "1.0",
+      showBanner: function(msg, type) {
+        var w = document.getElementById('unity-warning');
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        w.appendChild(div);
+        w.style.display = 'block';
+        if (type !== 'error') {
+          setTimeout(function() { w.removeChild(div); if (!w.children.length) w.style.display='none'; }, 5000);
+        }
+      }
+    };
+
+    var canvas = document.getElementById('unity-canvas');
+
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      var meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+      document.head.appendChild(meta);
+    }
+
+    document.getElementById('unity-loading-bar').style.display = 'block';
+
+    var script = document.createElement('script');
+    script.src = loaderUrl;
+    script.onload = function() {
+      createUnityInstance(canvas, config, function(progress) {
+        document.getElementById('unity-progress-bar-full').style.width = (100 * progress) + '%';
+      }).then(function(instance) {
+        document.getElementById('unity-loading-bar').style.display = 'none';
+        document.getElementById('fullscreen-btn').onclick = function() {
+          instance.SetFullscreen(1);
+        };
+      }).catch(function(msg) {
+        console.error(msg);
+      });
+    };
+    document.body.appendChild(script);
+  })();
+</script>
 
 <!-- CONTACT -->
 <section id="contact">
@@ -991,18 +1149,6 @@
     document.getElementById('videoUrl').value = '';
     document.getElementById('videoTitle').value = '';
     showToast('✓ VIDEO ADDED');
-  }
-
-  // ---- GAME EMBED ----
-  function loadGame() {
-    const url = document.getElementById('gameUrl').value.trim();
-    if (!url.startsWith('http')) { showToast('⚠ ENTER A VALID GAME URL'); return; }
-    const container = document.getElementById('unity-container');
-    container.innerHTML = `<iframe src="${url}" allowfullscreen style="width:100%;height:100%;border:none;"></iframe>`;
-    container.style.display = 'block';
-    document.getElementById('gameUploadUI').style.display = 'none';
-    document.getElementById('gamePlaceholder').style.minHeight = '600px';
-    showToast('✓ GAME LOADED');
   }
 
   // ---- CONTACT ----
