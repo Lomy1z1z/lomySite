@@ -5,60 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Shlomi Zberlo — Game Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #050810;
-    --bg2: #080d1a;
-    --panel: #0c1220;
-    --border: #1a2a4a;
-    --accent: #00f0ff;
-    --accent2: #ff4060;
-    --accent3: #7b2fff;
-    --text: #c8d8f0;
-    --muted: #4a6080;
-    --glow: 0 0 20px rgba(0,240,255,0.3);
+    /* Base: deep navy-purple fusion. Trust (navy) meets creativity (purple). */
+    --bg: #0a0a14;
+    --bg2: #100b1e;
+    --panel: #150f26;
+    --panel2: #1a1230;
+    --border: #2e2050;
+    --border-bright: #4a2f8a;
+
+    /* Accent: anime "power awakening" duotone — magenta to cyan */
+    --accent: #b14aff;       /* dark purple core */
+    --accent-bright: #d875ff;
+    --accent2: #00e0ff;      /* electric cyan counter-accent */
+    --accent3: #2b3a8f;      /* navy blue, trust/professional touches */
+    --gold: #ffb84a;         /* rare highlight, used sparingly like a "rank up" */
+
+    --text: #e4def9;
+    --text-dim: #b8aedb;
+    --muted: #6b5f94;
+    --black-deep: #060509;
+
+    --glow-purple: 0 0 30px rgba(177,74,255,0.4);
+    --glow-cyan: 0 0 24px rgba(0,224,255,0.35);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 16px;
     line-height: 1.6;
     overflow-x: hidden;
   }
 
-  /* SCANLINE OVERLAY */
-  body::before {
-    content: '';
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* AMBIENT BG — layered radial glows like an anime key visual */
+  .ambient-bg {
     position: fixed;
     inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
+    z-index: 0;
     pointer-events: none;
-    z-index: 9999;
+    background:
+      radial-gradient(ellipse 800px 600px at 15% 0%, rgba(177,74,255,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 90% 30%, rgba(0,224,255,0.10), transparent 60%),
+      radial-gradient(ellipse 900px 700px at 50% 100%, rgba(43,58,143,0.18), transparent 60%);
   }
 
-  /* GRID BG */
-  .grid-bg {
+  .speedlines {
     position: fixed;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
     z-index: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: repeating-linear-gradient(115deg, transparent 0 40px, rgba(216,117,255,0.6) 40px 41px);
   }
 
   /* NAV */
@@ -67,37 +73,57 @@
     top: 0;
     width: 100%;
     z-index: 100;
-    padding: 16px 40px;
+    padding: 18px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(5,8,16,0.85);
-    backdrop-filter: blur(12px);
+    background: rgba(10,10,20,0.8);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
   }
 
   .nav-logo {
     font-family: 'Orbitron', monospace;
     font-weight: 900;
-    font-size: 1.1rem;
-    color: var(--accent);
+    font-size: 1.15rem;
+    background: linear-gradient(90deg, var(--accent-bright), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     letter-spacing: 3px;
-    text-shadow: var(--glow);
   }
 
-  .nav-links { display: flex; gap: 28px; list-style: none; }
-  .nav-links a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
+  .nav-kana {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.65rem;
     color: var(--muted);
+    letter-spacing: 1px;
+    margin-left: 8px;
+  }
+
+  .nav-links { display: flex; gap: 30px; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--text-dim);
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-transform: uppercase;
     transition: color 0.2s;
+    position: relative;
   }
-  .nav-links a:hover { color: var(--accent); text-shadow: var(--glow); }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.25s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover::after { width: 100%; }
 
-  /* SECTIONS */
   section { position: relative; z-index: 1; }
 
   /* HERO */
@@ -111,43 +137,79 @@
     overflow: hidden;
   }
 
+  .hero-kana-bg {
+    position: absolute;
+    right: -40px;
+    top: 10%;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 18rem;
+    font-weight: 900;
+    color: rgba(177,74,255,0.06);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
   .hero-eyebrow {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 4px;
-    color: var(--accent);
-    margin-bottom: 20px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    margin-bottom: 18px;
     opacity: 0;
     animation: fadeUp 0.8s 0.2s forwards;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
+  .hero-eyebrow::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--accent2);
+    border-radius: 50%;
+    box-shadow: var(--glow-cyan);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   .hero-name {
     font-family: 'Orbitron', monospace;
     font-weight: 900;
-    font-size: clamp(3rem, 8vw, 7rem);
-    line-height: 1;
+    font-size: clamp(3rem, 8vw, 6.8rem);
+    line-height: 0.95;
     color: #fff;
-    text-shadow: 0 0 40px rgba(0,240,255,0.4);
     opacity: 0;
     animation: fadeUp 0.8s 0.4s forwards;
+    position: relative;
   }
 
-  .hero-name span { color: var(--accent); }
+  .hero-name .accent-word {
+    background: linear-gradient(120deg, var(--accent-bright) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 0 20px rgba(177,74,255,0.5));
+  }
 
   .hero-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1rem, 2.5vw, 1.6rem);
-    font-weight: 400;
-    color: var(--accent2);
-    letter-spacing: 4px;
-    margin-top: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-top: 14px;
     opacity: 0;
     animation: fadeUp 0.8s 0.6s forwards;
   }
 
+  .hero-title span { color: var(--accent-bright); }
+
   .hero-tagline {
-    max-width: 500px;
-    margin-top: 24px;
+    max-width: 520px;
+    margin-top: 22px;
     color: var(--muted);
     font-size: 1.05rem;
     font-weight: 300;
@@ -164,78 +226,59 @@
   }
 
   .btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 12px 28px;
+    padding: 13px 30px;
     border: 1px solid var(--accent);
-    color: var(--accent);
-    background: transparent;
+    color: var(--accent-bright);
+    background: rgba(177,74,255,0.06);
     cursor: pointer;
     transition: all 0.25s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
   }
   .btn:hover {
     background: var(--accent);
-    color: var(--bg);
-    box-shadow: var(--glow);
+    color: #fff;
+    box-shadow: var(--glow-purple);
+    transform: translateY(-2px);
   }
   .btn-solid {
-    background: var(--accent);
-    color: var(--bg);
+    background: linear-gradient(120deg, var(--accent), var(--accent2));
+    color: #08060f;
+    border: none;
+    font-weight: 700;
   }
   .btn-solid:hover {
-    background: transparent;
-    color: var(--accent);
+    box-shadow: var(--glow-purple);
+    filter: brightness(1.1);
+    color: #08060f;
   }
-
-  /* Floating orbs */
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-  }
-  .orb1 {
-    width: 500px; height: 500px;
-    background: rgba(0,240,255,0.06);
-    top: -100px; right: -100px;
-    animation: float1 8s ease-in-out infinite;
-  }
-  .orb2 {
-    width: 300px; height: 300px;
-    background: rgba(123,47,255,0.08);
-    bottom: 100px; left: 20%;
-    animation: float2 10s ease-in-out infinite;
-  }
-
-  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,30px)} }
-  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
   /* SECTION WRAPPER */
   .section-inner {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 80px 40px;
+    padding: 90px 40px;
   }
 
   .section-label {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    color: var(--accent);
-    margin-bottom: 8px;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    margin-bottom: 10px;
   }
 
   .section-title {
     font-family: 'Orbitron', monospace;
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
-    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: 800;
     color: #fff;
-    margin-bottom: 48px;
+    margin-bottom: 50px;
     position: relative;
     display: inline-block;
   }
@@ -243,12 +286,12 @@
   .section-title::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -12px;
     left: 0;
-    width: 60px;
-    height: 2px;
-    background: var(--accent);
-    box-shadow: var(--glow);
+    width: 70px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    box-shadow: var(--glow-purple);
   }
 
   /* ABOUT */
@@ -262,7 +305,10 @@
   }
 
   .about-text p { color: var(--text); margin-bottom: 16px; font-size: 1.05rem; }
-  .about-text p strong { color: var(--accent); }
+  .about-text p strong {
+    color: var(--accent-bright);
+    font-weight: 600;
+  }
 
   .stats-grid {
     display: grid;
@@ -273,17 +319,32 @@
   .stat-card {
     background: var(--panel);
     border: 1px solid var(--border);
-    padding: 20px;
-    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-    transition: border-color 0.2s;
+    padding: 22px;
+    clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
   }
-  .stat-card:hover { border-color: var(--accent); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .stat-card:hover::before { transform: scaleX(1); }
 
   .stat-num {
     font-family: 'Orbitron', monospace;
-    font-size: 2rem;
+    font-size: 2.1rem;
     font-weight: 900;
-    color: var(--accent);
+    background: linear-gradient(120deg, var(--accent-bright), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .stat-label {
     font-family: 'Share Tech Mono', monospace;
@@ -305,7 +366,7 @@
   .skill-card {
     background: var(--panel);
     border: 1px solid var(--border);
-    padding: 24px;
+    padding: 26px;
     position: relative;
     overflow: hidden;
     transition: border-color 0.3s, transform 0.3s;
@@ -315,67 +376,65 @@
     position: absolute;
     top: 0; left: 0;
     width: 3px; height: 0;
-    background: var(--accent);
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
     transition: height 0.3s;
   }
   .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
   .skill-card:hover::before { height: 100%; }
 
-  .skill-icon {
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
+  .skill-icon { font-size: 1.7rem; margin-bottom: 14px; }
 
   .skill-name {
     font-family: 'Orbitron', monospace;
     font-size: 0.85rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
   }
 
   .skill-desc {
     font-size: 0.9rem;
     color: var(--muted);
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
   /* EXPERIENCE */
   #experience { background: var(--bg2); }
 
-  .timeline { position: relative; padding-left: 32px; }
+  .timeline { position: relative; padding-left: 34px; }
   .timeline::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent3), transparent);
+    background: linear-gradient(to bottom, var(--accent2), var(--accent), transparent);
   }
 
   .timeline-item {
     position: relative;
     margin-bottom: 40px;
-    padding: 24px;
+    padding: 26px;
     background: var(--panel);
     border: 1px solid var(--border);
-    transition: border-color 0.2s;
+    transition: border-color 0.25s;
   }
   .timeline-item:hover { border-color: var(--accent); }
 
   .timeline-item::before {
     content: '';
     position: absolute;
-    left: -39px;
-    top: 28px;
+    left: -41px;
+    top: 30px;
     width: 14px; height: 14px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 12px var(--accent);
+    background: var(--accent2);
+    box-shadow: var(--glow-cyan);
   }
 
   .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
   .job-title { font-family: 'Orbitron', monospace; font-size: 0.95rem; color: #fff; font-weight: 700; }
-  .job-company { color: var(--accent); font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; }
+  .job-company { color: var(--accent-bright); font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; }
   .job-date { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
   .job-location { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
   .job-desc { font-size: 0.95rem; color: var(--text); }
@@ -395,9 +454,13 @@
     background: var(--panel);
     border: 1px solid var(--border);
     overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
   }
-  .video-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 40px rgba(0,240,255,0.1); }
+  .video-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(177,74,255,0.15);
+  }
 
   .video-header {
     padding: 16px 20px;
@@ -411,10 +474,10 @@
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.65rem;
     letter-spacing: 2px;
-    color: var(--accent);
-    background: rgba(0,240,255,0.08);
+    color: var(--accent2);
+    background: rgba(0,224,255,0.08);
     padding: 4px 10px;
-    border: 1px solid rgba(0,240,255,0.2);
+    border: 1px solid rgba(0,224,255,0.25);
   }
 
   .video-wrapper {
@@ -433,63 +496,24 @@
   .video-title { font-family: 'Orbitron', monospace; font-size: 0.8rem; color: #fff; margin-bottom: 4px; }
   .video-sub { font-size: 0.85rem; color: var(--muted); }
 
-  /* ADD VIDEO FORM */
-  .add-video-section {
-    margin-top: 40px;
-    background: var(--panel);
-    border: 1px dashed var(--border);
-    padding: 32px;
-    text-align: center;
-  }
-
-  .add-video-section h3 {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.9rem;
-    color: var(--muted);
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 12px;
-    max-width: 700px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-  }
-
-  .input-field {
-    flex: 1;
-    min-width: 200px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    padding: 12px 16px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .input-field:focus { border-color: var(--accent); }
-  .input-field::placeholder { color: var(--muted); }
-
-  /* UNITY GAME */
+  /* ==== GAME SECTION — GATED LAUNCH ==== */
   #game { background: var(--bg2); }
 
   .game-wrapper {
     position: relative;
-    background: #000;
-    border: 1px solid var(--border);
+    background: var(--black-deep);
+    border: 1px solid var(--border-bright);
     overflow: hidden;
+    box-shadow: 0 0 60px rgba(177,74,255,0.08);
   }
 
   .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
+    padding: 14px 22px;
     border-bottom: 1px solid var(--border);
-    background: var(--panel);
+    background: var(--panel2);
   }
 
   .game-header-title {
@@ -503,16 +527,36 @@
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.65rem;
     letter-spacing: 2px;
-    color: var(--accent3);
-    background: rgba(123,47,255,0.1);
+    color: var(--accent-bright);
+    background: rgba(177,74,255,0.12);
     padding: 4px 10px;
-    border: 1px solid rgba(123,47,255,0.3);
+    border: 1px solid rgba(177,74,255,0.35);
   }
+
+  .game-close-btn {
+    display: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-bright);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .game-close-btn:hover {
+    background: var(--accent2);
+    color: #08060f;
+    border-color: var(--accent2);
+  }
+  .game-close-btn.visible { display: flex; align-items: center; justify-content: center; }
 
   #unity-game-area {
     position: relative;
     width: 100%;
-    padding-bottom: 62.5%; /* 960x600 ratio */
+    padding-bottom: 62.5%;
     background: #231F20;
   }
 
@@ -522,6 +566,100 @@
     inset: 0;
     width: 100% !important;
     height: 100% !important;
+  }
+
+  #unity-canvas-holder {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* GATE OVERLAY — click-to-launch screen */
+  #game-gate {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 600px 400px at 50% 40%, rgba(177,74,255,0.18), transparent 70%),
+      linear-gradient(160deg, #0d0817 0%, #150f26 60%, #0d0817 100%);
+    cursor: pointer;
+    transition: opacity 0.4s ease;
+    overflow: hidden;
+  }
+
+  #game-gate.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .gate-kana {
+    position: absolute;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    color: rgba(216,117,255,0.08);
+    font-size: 14rem;
+    line-height: 1;
+    user-select: none;
+    z-index: 0;
+  }
+
+  .gate-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gate-play-btn {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 0 rgba(177,74,255,0.5), var(--glow-purple);
+    animation: gatePulse 2.4s infinite;
+    margin-bottom: 24px;
+    transition: transform 0.2s;
+  }
+  #game-gate:hover .gate-play-btn { transform: scale(1.08); }
+
+  @keyframes gatePulse {
+    0% { box-shadow: 0 0 0 0 rgba(177,74,255,0.45), var(--glow-purple); }
+    70% { box-shadow: 0 0 0 22px rgba(177,74,255,0), var(--glow-purple); }
+    100% { box-shadow: 0 0 0 0 rgba(177,74,255,0), var(--glow-purple); }
+  }
+
+  .gate-play-btn svg { width: 34px; height: 34px; fill: #08060f; margin-left: 4px; }
+
+  .gate-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .gate-sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .gate-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 18px;
   }
 
   #unity-loading-bar {
@@ -572,7 +710,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 16px;
-    background: var(--panel);
+    background: var(--panel2);
     border-top: 1px solid var(--border);
   }
 
@@ -581,6 +719,7 @@
     background: url('TemplateData/unity-logo-title-footer.png') no-repeat left center;
     background-size: contain;
     opacity: 0.6;
+    filter: brightness(1.6);
   }
 
   .game-footer-name {
@@ -599,7 +738,7 @@
     outline: none;
     opacity: 0.7;
     transition: opacity 0.2s;
-    filter: invert(1) sepia(1) saturate(3) hue-rotate(160deg);
+    filter: invert(1) sepia(1) saturate(4) hue-rotate(230deg);
   }
   #fullscreen-btn:hover { opacity: 1; }
 
@@ -610,15 +749,6 @@
     letter-spacing: 1px;
     color: var(--muted);
     text-align: center;
-  }
-
-  .game-input-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 20px;
-    max-width: 600px;
   }
 
   /* CONTACT */
@@ -662,49 +792,11 @@
     text-decoration: none;
     padding: 10px 20px;
     border: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--text-dim);
     transition: all 0.2s;
     text-transform: uppercase;
   }
-  .link-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .contact-right {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 32px;
-  }
-
-  .contact-right h3 {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.9rem;
-    color: #fff;
-    margin-bottom: 24px;
-    letter-spacing: 2px;
-  }
-
-  .form-group { margin-bottom: 16px; }
-  .form-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    color: var(--muted);
-    display: block;
-    margin-bottom: 6px;
-  }
-  .form-input, .form-textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.95rem;
-    padding: 12px 16px;
-    outline: none;
-    transition: border-color 0.2s;
-    resize: vertical;
-  }
-  .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
-  .form-textarea { min-height: 100px; }
+  .link-btn:hover { border-color: var(--accent); color: var(--accent-bright); }
 
   /* FOOTER */
   footer {
@@ -723,7 +815,7 @@
     color: var(--muted);
   }
 
-  footer span { color: var(--accent); }
+  footer span { color: var(--accent-bright); }
 
   /* TOAST */
   .toast {
@@ -732,7 +824,7 @@
     right: 30px;
     background: var(--panel);
     border: 1px solid var(--accent);
-    color: var(--accent);
+    color: var(--accent-bright);
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.75rem;
     letter-spacing: 2px;
@@ -741,28 +833,34 @@
     transform: translateY(80px);
     opacity: 0;
     transition: all 0.3s;
-    box-shadow: var(--glow);
+    box-shadow: var(--glow-purple);
   }
   .toast.show { transform: translateY(0); opacity: 1; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
     .nav-links { display: none; }
     #hero { padding: 100px 6vw 60px; }
+    .hero-kana-bg { display: none; }
     .about-grid, .contact-grid { grid-template-columns: 1fr; }
     .video-grid { grid-template-columns: 1fr; }
     .section-inner { padding: 60px 20px; }
+    .gate-title { font-size: 1.2rem; }
+    .gate-kana { font-size: 8rem; }
   }
 </style>
 </head>
 <body>
 
-<div class="grid-bg"></div>
+<div class="ambient-bg"></div>
+<div class="speedlines"></div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">SZ.DEV</div>
+  <div class="nav-logo">SZ.DEV<span class="nav-kana">勝</span></div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -775,12 +873,11 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="hero-eyebrow">// GAME DEVELOPER & UNITY ENGINEER</div>
-  <h1 class="hero-name">SHLOMI<br /><span>ZBERLO</span></h1>
-  <div class="hero-title">AGE 27 · HOLON, ISRAEL</div>
-  <p class="hero-tagline">Crafting immersive gameplay systems and combat mechanics in Unity — building worlds one line of C# at a time.</p>
+  <div class="hero-kana-bg">侍</div>
+  <div class="hero-eyebrow">GAME DEVELOPER &amp; UNITY ENGINEER</div>
+  <h1 class="hero-name">SHLOMI<br /><span class="accent-word">ZBERLO</span></h1>
+  <div class="hero-title">AGE 27 · HOLON, ISRAEL <span>// LEVEL UP EVERY BUILD</span></div>
+  <p class="hero-tagline">Crafting immersive gameplay systems and combat mechanics in Unity — building worlds, one line of C# at a time.</p>
   <div class="hero-cta">
     <a href="#videos" class="btn btn-solid">Watch My Work</a>
     <a href="#game" class="btn">Play My Game</a>
@@ -795,13 +892,13 @@
     <div class="about-grid">
       <div class="about-text">
         <p>I'm <strong>Shlomi Zberlo</strong>, a 27-year-old game developer based in Holon, Israel. My passion is building engaging, polished gameplay experiences using <strong>Unity</strong> — from tight combat mechanics to fluid animation systems.</p>
-        <p>With <strong>3 years of C# experience</strong> and a solid understanding of Unity's architecture, I've independently built projects that showcase real game-feel: responsive controls, animation-driven states, and well-structured code.</p>
+        <p>With <strong>5 years of C# experience</strong> and a solid understanding of Unity's architecture, I've independently built projects that showcase real game-feel: responsive controls, animation-driven states, and well-structured code.</p>
         <p>Beyond code, I bring <strong>strong problem-solving skills</strong> and a technical background in IT and customer systems — which means I ship things that actually work.</p>
         <a href="https://github.com" target="_blank" class="btn" style="display:inline-block; margin-top:16px;">GitHub Profile ↗</a>
       </div>
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-num">3+</div>
+          <div class="stat-num">5+</div>
           <div class="stat-label">YEARS C#</div>
         </div>
         <div class="stat-card">
@@ -835,7 +932,7 @@
       <div class="skill-card">
         <div class="skill-icon">⚡</div>
         <div class="skill-name">C# PROGRAMMING</div>
-        <div class="skill-desc">3 years writing clean, structured C# for gameplay systems, combat mechanics, AI logic, and more.</div>
+        <div class="skill-desc">5 years writing clean, structured C# for gameplay systems, combat mechanics, AI logic, and more.</div>
       </div>
       <div class="skill-card">
         <div class="skill-icon">☕</div>
@@ -928,7 +1025,6 @@
     <h2 class="section-title">VIDEOS</h2>
 
     <div class="video-grid" id="videoGrid">
-      <!-- Initial video -->
       <div class="video-card">
         <div class="video-header">
           <div>
@@ -949,15 +1045,27 @@
           <div class="video-sub">Gameplay clip showcasing combat mechanics and animation systems built in Unity.</div>
         </div>
       </div>
-    </div>
 
-    <!-- Add Video -->
-    <div class="add-video-section">
-      <h3>+ ADD A NEW VIDEO</h3>
-      <div class="input-row">
-        <input type="text" class="input-field" id="videoUrl" placeholder="YouTube URL (e.g. https://youtu.be/...)" />
-        <input type="text" class="input-field" id="videoTitle" placeholder="Video title" style="flex:0.6" />
-        <button class="btn btn-solid" onclick="addVideo()">ADD</button>
+      <div class="video-card">
+        <div class="video-header">
+          <div>
+            <div class="video-title" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;">WhiteMan — Game Trailer</div>
+            <div style="font-size:0.8rem;color:var(--muted);margin-top:2px;">Unity · C# · Playable Build</div>
+          </div>
+          <div class="video-tag" style="color:var(--accent-bright); background:rgba(177,74,255,0.1); border-color:rgba(177,74,255,0.3);">PLAYABLE</div>
+        </div>
+        <div class="video-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/igOt_jqUFLk"
+            title="Shlomi Zberlo — WhiteMan Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-footer" style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+          <div class="video-sub">This game is live and playable right now — try it yourself.</div>
+          <a href="#game" class="btn btn-solid" style="white-space:nowrap; padding:10px 22px; font-size:0.7rem;">▶ PLAY NOW</a>
+        </div>
       </div>
     </div>
   </div>
@@ -972,11 +1080,29 @@
     <div class="game-wrapper">
       <div class="game-header">
         <div class="game-header-title">WHITEMAN — COMBAT DEMO</div>
-        <div class="game-header-tag">UNITY WEBGL</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="game-header-tag">UNITY WEBGL</div>
+          <button id="close-game-btn" class="game-close-btn" onclick="closeGame()" title="Close game">✕</button>
+        </div>
       </div>
 
       <div id="unity-game-area">
-        <canvas id="unity-canvas" tabindex="-1"></canvas>
+
+        <!-- GATE: must click to load/start the game -->
+        <div id="game-gate" onclick="startGame()">
+          <div class="gate-kana">遊</div>
+          <div class="gate-content">
+            <div class="gate-play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div class="gate-title">CLICK TO START</div>
+            <div class="gate-sub">Load the game and step into the arena</div>
+            <div class="gate-meta">WHITEMAN · UNITY WEBGL BUILD</div>
+          </div>
+        </div>
+
+        <div id="unity-canvas-holder"></div>
+
         <div id="unity-loading-bar">
           <div id="unity-logo"></div>
           <div id="unity-progress-bar-empty">
@@ -993,13 +1119,91 @@
       </div>
     </div>
 
-    <p class="game-note">🖱️ CLICK ON THE GAME FIRST TO CAPTURE INPUT &nbsp;|&nbsp; USE FULLSCREEN BUTTON FOR BEST EXPERIENCE</p>
+    <p class="game-note">🖱️ CLICK THE GAME TO START &nbsp;|&nbsp; ✕ CLOSES AND RESETS THE GAME &nbsp;|&nbsp; CLICKING START AGAIN BEGINS FRESH</p>
   </div>
 </section>
 
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">// 06 — CONTACT</div>
+    <h2 class="section-title">GET IN TOUCH</h2>
+    <div class="contact-info" style="max-width:600px;">
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">EMAIL</div>
+          <div class="contact-value">shlomi1x1x@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-label">PHONE</div>
+          <div class="contact-value">053-470-9250</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">LOCATION</div>
+          <div class="contact-value">Holon, Har Hzofim 25, Israel</div>
+        </div>
+      </div>
+      <div class="contact-links">
+        <a href="https://github.com" target="_blank" class="link-btn">GitHub ↗</a>
+        <a href="mailto:shlomi1x1x@gmail.com" class="link-btn">Email Me ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>SHLOMI ZBERLO</span> — GAME DEVELOPER · HOLON, ISRAEL</p>
+  <p style="margin-top:8px;font-size:0.6rem;">BUILT WITH PASSION · POWERED BY UNITY & C#</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-  // Unity WebGL loader
-  (function() {
+  // ---- GAME GATE / LAZY LOAD UNITY (with restart support) ----
+  let gameStarted = false;
+  let unityInstance = null;
+  let loaderScriptEl = null;
+
+  function showGate() {
+    const gate = document.getElementById('game-gate');
+    gate.style.display = 'flex';
+    // allow display to apply before removing 'hidden' transition class
+    requestAnimationFrame(() => gate.classList.remove('hidden'));
+  }
+
+  function hideGate() {
+    const gate = document.getElementById('game-gate');
+    gate.classList.add('hidden');
+    setTimeout(() => { gate.style.display = 'none'; }, 400);
+  }
+
+  function buildFreshCanvas() {
+    const holder = document.getElementById('unity-canvas-holder');
+    holder.innerHTML = ''; // wipe any previous canvas
+    const canvas = document.createElement('canvas');
+    canvas.id = 'unity-canvas';
+    canvas.tabIndex = -1;
+    holder.appendChild(canvas);
+    return canvas;
+  }
+
+  function startGame() {
+    if (gameStarted) return;
+    gameStarted = true;
+
+    hideGate();
+    document.getElementById('close-game-btn').classList.add('visible');
+
+    var canvas = buildFreshCanvas();
     var buildUrl = "Build";
     var loaderUrl = buildUrl + "/Test12345.loader.js";
     var config = {
@@ -1018,21 +1222,28 @@
         w.appendChild(div);
         w.style.display = 'block';
         if (type !== 'error') {
-          setTimeout(function() { w.removeChild(div); if (!w.children.length) w.style.display='none'; }, 5000);
+          setTimeout(function() { if(w.contains(div)) w.removeChild(div); if (!w.children.length) w.style.display='none'; }, 5000);
         }
       }
     };
 
-    var canvas = document.getElementById('unity-canvas');
-
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      var meta = document.createElement('meta');
-      meta.name = 'viewport';
-      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-      document.head.appendChild(meta);
+      if (!document.querySelector('meta[name="viewport"][data-unity]')) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.setAttribute('data-unity', '1');
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.head.appendChild(meta);
+      }
     }
 
+    document.getElementById('unity-progress-bar-full').style.width = '0%';
     document.getElementById('unity-loading-bar').style.display = 'block';
+
+    // remove any previous loader script tag before adding a new one
+    if (loaderScriptEl && loaderScriptEl.parentNode) {
+      loaderScriptEl.parentNode.removeChild(loaderScriptEl);
+    }
 
     var script = document.createElement('script');
     script.src = loaderUrl;
@@ -1040,126 +1251,45 @@
       createUnityInstance(canvas, config, function(progress) {
         document.getElementById('unity-progress-bar-full').style.width = (100 * progress) + '%';
       }).then(function(instance) {
+        unityInstance = instance;
         document.getElementById('unity-loading-bar').style.display = 'none';
         document.getElementById('fullscreen-btn').onclick = function() {
           instance.SetFullscreen(1);
         };
       }).catch(function(msg) {
         console.error(msg);
+        showToast('⚠ GAME FAILED TO LOAD');
+        closeGame();
       });
     };
+    loaderScriptEl = script;
     document.body.appendChild(script);
-  })();
-</script>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-inner">
-    <div class="section-label">// 06 — CONTACT</div>
-    <h2 class="section-title">GET IN TOUCH</h2>
-    <div class="contact-grid">
-      <div class="contact-info">
-        <h3>CONTACT INFO</h3>
-        <div class="contact-item">
-          <div class="contact-icon">📧</div>
-          <div>
-            <div class="contact-label">EMAIL</div>
-            <div class="contact-value">shlomi1x1x@gmail.com</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📱</div>
-          <div>
-            <div class="contact-label">PHONE</div>
-            <div class="contact-value">053-470-9250</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📍</div>
-          <div>
-            <div class="contact-label">LOCATION</div>
-            <div class="contact-value">Holon, Har Hzofim 25, Israel</div>
-          </div>
-        </div>
-        <div class="contact-links">
-          <a href="https://github.com" target="_blank" class="link-btn">GitHub ↗</a>
-          <a href="mailto:shlomi1x1x@gmail.com" class="link-btn">Email Me ↗</a>
-        </div>
-      </div>
-      <div class="contact-right">
-        <h3>SEND A MESSAGE</h3>
-        <div class="form-group">
-          <label class="form-label">YOUR NAME</label>
-          <input type="text" class="form-input" placeholder="John Doe" id="contactName" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">EMAIL</label>
-          <input type="email" class="form-input" placeholder="you@company.com" id="contactEmail" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">MESSAGE</label>
-          <textarea class="form-textarea" placeholder="Tell me about your project..." id="contactMsg"></textarea>
-        </div>
-        <button class="btn btn-solid" style="width:100%;" onclick="sendMessage()">SEND MESSAGE</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p>© 2025 <span>SHLOMI ZBERLO</span> — GAME DEVELOPER · HOLON, ISRAEL</p>
-  <p style="margin-top:8px;font-size:0.6rem;">BUILT WITH PASSION · POWERED BY UNITY & C#</p>
-</footer>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<script>
-  // ---- VIDEO ADD ----
-  function getYouTubeId(url) {
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?\s]+)/);
-    return match ? match[1] : null;
   }
 
-  function addVideo() {
-    const url = document.getElementById('videoUrl').value.trim();
-    const title = document.getElementById('videoTitle').value.trim() || 'Gameplay Clip';
-    const id = getYouTubeId(url);
-    if (!id) { showToast('⚠ INVALID YOUTUBE URL'); return; }
+  function closeGame() {
+    if (!gameStarted) return;
 
-    const card = document.createElement('div');
-    card.className = 'video-card';
-    card.innerHTML = `
-      <div class="video-header">
-        <div>
-          <div class="video-title" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;">${title}</div>
-          <div style="font-size:0.8rem;color:var(--muted);margin-top:2px;">Unity · C#</div>
-        </div>
-        <div class="video-tag">GAMEPLAY</div>
-      </div>
-      <div class="video-wrapper">
-        <iframe src="https://www.youtube.com/embed/${id}" title="${title}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-      <div class="video-footer"><div class="video-sub">Added gameplay clip.</div></div>
-    `;
-    document.getElementById('videoGrid').appendChild(card);
-    document.getElementById('videoUrl').value = '';
-    document.getElementById('videoTitle').value = '';
-    showToast('✓ VIDEO ADDED');
-  }
+    const finish = () => {
+      // tear down canvas + loader script so next start is fully fresh
+      document.getElementById('unity-canvas-holder').innerHTML = '';
+      if (loaderScriptEl && loaderScriptEl.parentNode) {
+        loaderScriptEl.parentNode.removeChild(loaderScriptEl);
+      }
+      loaderScriptEl = null;
+      unityInstance = null;
+      gameStarted = false;
 
-  // ---- CONTACT ----
-  function sendMessage() {
-    const name = document.getElementById('contactName').value.trim();
-    const email = document.getElementById('contactEmail').value.trim();
-    const msg = document.getElementById('contactMsg').value.trim();
-    if (!name || !email || !msg) { showToast('⚠ FILL ALL FIELDS'); return; }
-    const mailto = `mailto:shlomi1x1x@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(msg + '\n\nFrom: ' + email)}`;
-    window.location.href = mailto;
-    showToast('✓ OPENING MAIL CLIENT');
+      document.getElementById('unity-loading-bar').style.display = 'none';
+      document.getElementById('unity-progress-bar-full').style.width = '0%';
+      document.getElementById('close-game-btn').classList.remove('visible');
+      showGate();
+    };
+
+    if (unityInstance && typeof unityInstance.Quit === 'function') {
+      unityInstance.Quit().then(finish).catch(finish);
+    } else {
+      finish();
+    }
   }
 
   // ---- TOAST ----
