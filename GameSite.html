@@ -145,7 +145,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 60% center;
     z-index: -2;
     filter: saturate(1.05) contrast(1.05);
   }
@@ -871,8 +870,7 @@
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
     .nav-links { display: none; }
-    #hero { padding: 100px 6vw 60px; min-height: 100svh; }
-    .hero-video { object-position: 65% center; }
+    #hero { padding: 100px 6vw 60px; }
     .hero-kana-bg { display: none; }
     .about-grid, .contact-grid { grid-template-columns: 1fr; }
     .video-grid { grid-template-columns: 1fr; }
@@ -913,7 +911,6 @@
   <p class="hero-tagline">Crafting immersive gameplay systems and combat mechanics in Unity — building worlds, one line of C# at a time.</p>
   <div class="hero-cta">
     <a href="#videos" class="btn btn-solid">Watch My Work</a>
-    <a href="#game" class="btn">Play My Game</a>
   </div>
 </section>
 
@@ -1082,7 +1079,7 @@
       <div class="video-card">
         <div class="video-header">
           <div>
-            <div class="video-title" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;">WhiteMan — Game Trailer</div>
+            <div class="video-title" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;">WhiteMan — Boss Fight</div>
             <div style="font-size:0.8rem;color:var(--muted);margin-top:2px;">Unity · C# · Playable Build</div>
           </div>
           <div class="video-tag" style="color:var(--accent-bright); background:rgba(177,74,255,0.1); border-color:rgba(177,74,255,0.3);">PLAYABLE</div>
@@ -1090,7 +1087,7 @@
         <div class="video-wrapper">
           <iframe
             src="https://www.youtube.com/embed/igOt_jqUFLk"
-            title="Shlomi Zberlo — WhiteMan Trailer"
+            title="Shlomi Zberlo — WhiteMan Boss Fight"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
           </iframe>
