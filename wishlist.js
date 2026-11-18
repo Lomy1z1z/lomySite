@@ -1,7 +1,7 @@
 // The WISHLIST button: everyone sees how many shamans are waiting; a press adds you once (the counter is a small
 // Cloudflare Worker that counts each visitor one time, and this browser remembers that you're on the list).
 // If the counter can't be reached, the buttons stay hidden rather than show a number that isn't real.
-const WISHLIST_API = '';
+const WISHLIST_API = 'https://shamagon-wishlist.shamagon.workers.dev/wishlist';
 const WISHLIST_KEY = 'shamagon.wishlisted';
 
 function wishlistRemembered() {

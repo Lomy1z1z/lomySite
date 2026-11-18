@@ -332,7 +332,7 @@
 .trailer-dialog-close:hover { background: #1b3352; color: var(--spirit-teal); }
 .trailer-play {
   position: absolute;
-  inset: 50% auto auto 50%;
+  inset: 76% auto auto 50%;
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
