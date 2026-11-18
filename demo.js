@@ -32,7 +32,12 @@ async function prepareBrowserDemo() {
   const canFullscreen = !!(frame.requestFullscreen || frame.webkitRequestFullscreen) &&
     !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
 
+  // Phones and tablets: the game opens as a page of its own (the whole screen, in landscape), not in the small frame.
+  const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+    (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+
   function open() {
+    if (mobile) { window.location.href = entry.href; return; }
     frame.src = entry.href;
     frame.hidden = false;
     poster.hidden = true;

@@ -44,6 +44,23 @@
     #fs.show { opacity: .9; }
     #fs:hover { opacity: 1; background: #1b3352; color: var(--teal); }
     #fs[hidden] { display: none; }
+    /* Phones and tablets play in landscape: held upright, this covers the game until the device is turned */
+    #rotate { display: none; position: fixed; inset: 0; z-index: 5; flex-direction: column; align-items: center; justify-content: center;
+              gap: 18px; padding: 24px; text-align: center;
+              background: radial-gradient(ellipse at 50% 40%, #1d3a66 0%, var(--ink) 70%); }
+    @media (orientation: portrait) { .mobile #rotate { display: flex; } }
+    #rotate img { width: min(240px, 60vw); filter: drop-shadow(0 0 18px #64e8eb55); }
+    #rotate .phone { width: 52px; height: 90px; margin: 14px 0; border: 4px solid var(--teal); border-radius: 12px; position: relative;
+                     box-shadow: 0 0 18px #64e8eb55; animation: turn 2.4s ease-in-out infinite; }
+    #rotate .phone::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 12px; height: 3px; margin-left: -6px; border-radius: 2px; background: var(--teal); }
+    #rotate h2 { margin: 0; font: 400 clamp(20px, 6.6vw, 28px)/1.1 "Shamagon Brush", "Open Sans", sans-serif; letter-spacing: .08em;
+                 background: var(--stroke); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #rotate p { margin: 0; max-width: 300px; font-size: 15px; color: var(--muted); }
+    #landscape { margin-top: 6px; padding: 13px 26px; border-radius: 999px; border: 0; font: 600 16px "Open Sans", sans-serif; color: #2a1603;
+                 background: linear-gradient(#ffe896, #ecb03e 55%, #b87018); box-shadow: 0 0 22px #ffbe4677; cursor: pointer; }
+    #landscape[hidden] { display: none; }
+    @keyframes turn { 0%, 20% { transform: rotate(0); } 50%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0); } }
+    @media (prefers-reduced-motion: reduce) { #rotate .phone { animation: none; transform: rotate(-90deg); } }
     @keyframes shine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
     @keyframes pulse { 0%, 100% { opacity: .55; transform: scaleX(.9); } 50% { opacity: 1; transform: scaleX(1.05); } }
     .summon #fill { background: linear-gradient(90deg, #b9abff, #61edea, #b9abff); background-size: 200% 100%; animation: flow 1.2s linear infinite; }
@@ -53,6 +70,14 @@
 <body>
   <canvas id="unity-canvas" tabindex="-1"></canvas>
   <button id="fs" type="button" title="Full screen" aria-label="Full screen" hidden>⛶</button>
+
+  <div id="rotate" aria-live="polite">
+    <img src="../assets/brand/shamagon-spirit-logo.webp" alt="Shamagon">
+    <div class="phone" aria-hidden="true"></div>
+    <h2>ROTATE YOUR PHONE</h2>
+    <p>SHAMAGON is played in landscape. Turn your phone sideways to continue.</p>
+    <button id="landscape" type="button" hidden>Play in landscape</button>
+  </div>
 
   <div id="loader">
     <img id="logo" src="../assets/brand/shamagon-spirit-logo.webp" alt="Shamagon">
@@ -115,10 +140,33 @@
       status.textContent = "";
     }
 
-    // Full screen from inside the game too (where the browser allows a page to)
-    const fs = document.getElementById("fs");
+    // Phones and tablets (iPadOS reports itself as a Mac, but with touch)
     const root = document.documentElement;
-    if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+    const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+    if (MOBILE) root.classList.add("mobile");
+
+    // Landscape only on mobile. Where the browser can lock it (Android: full screen + lock), any touch does that;
+    // where it can't (iPhone), the rotate screen above stays until the phone is turned.
+    const requestFs = root.requestFullscreen || root.webkitRequestFullscreen;
+    const canLock = MOBILE && !!requestFs && !!(screen.orientation && screen.orientation.lock);
+    async function goLandscape() {
+      try {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) await requestFs.call(root, { navigationUI: "hide" });
+        await screen.orientation.lock("landscape");
+      } catch (e) { /* not allowed here: the rotate screen still asks */ }
+    }
+    if (canLock) {
+      const landscape = document.getElementById("landscape");
+      landscape.hidden = false;
+      landscape.addEventListener("click", goLandscape);
+      window.addEventListener("touchend", () => {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) goLandscape();
+      }, { passive: true });
+    }
+
+    // Full screen from inside the game too (where the browser allows a page to; on mobile it is automatic)
+    const fs = document.getElementById("fs");
+    if (!MOBILE && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) {
       fs.hidden = false;
       let hideAt = 0;
       const wake = () => { fs.classList.add("show"); clearTimeout(hideAt); hideAt = setTimeout(() => fs.classList.remove("show"), 2200); };
@@ -143,7 +191,8 @@
       productVersion: "2",
       showBanner: (msg, type) => { if (type === "error") fail(msg); },
     };
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) config.devicePixelRatio = 1;
+    // Sharp on phones: the screen's real pixels, up to 2x (above that it costs frames and heat for no visible gain)
+    if (MOBILE) config.devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2);
 
     const script = document.createElement("script");
     script.src = "Build/WebGLDemo.loader.js";
