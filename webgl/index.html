@@ -38,6 +38,12 @@
     #tip b { color: var(--paper); }
     #note { font-size: 12px; color: var(--muted); opacity: .8; }
     #error { display: none; max-width: 520px; color: #ffb4b4; }
+    /* The full screen corner button: shown while the mouse moves, then it fades */
+    #fs { position: fixed; top: 10px; right: 10px; z-index: 3; width: 42px; height: 42px; border-radius: 8px; border: 1px solid #79ccf466;
+          background: #0b1529cc; color: var(--paper); font-size: 20px; line-height: 1; cursor: pointer; opacity: 0; transition: opacity .4s, background .2s; }
+    #fs.show { opacity: .9; }
+    #fs:hover { opacity: 1; background: #1b3352; color: var(--teal); }
+    #fs[hidden] { display: none; }
     @keyframes shine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
     @keyframes pulse { 0%, 100% { opacity: .55; transform: scaleX(.9); } 50% { opacity: 1; transform: scaleX(1.05); } }
     .summon #fill { background: linear-gradient(90deg, #b9abff, #61edea, #b9abff); background-size: 200% 100%; animation: flow 1.2s linear infinite; }
@@ -46,6 +52,7 @@
 </head>
 <body>
   <canvas id="unity-canvas" tabindex="-1"></canvas>
+  <button id="fs" type="button" title="Full screen" aria-label="Full screen" hidden>⛶</button>
 
   <div id="loader">
     <img id="logo" src="../assets/brand/shamagon-spirit-logo.webp" alt="Shamagon">
@@ -106,6 +113,23 @@
       e.style.display = "block";
       e.textContent = "The demo couldn't start: " + message;
       status.textContent = "";
+    }
+
+    // Full screen from inside the game too (where the browser allows a page to)
+    const fs = document.getElementById("fs");
+    const root = document.documentElement;
+    if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+      fs.hidden = false;
+      let hideAt = 0;
+      const wake = () => { fs.classList.add("show"); clearTimeout(hideAt); hideAt = setTimeout(() => fs.classList.remove("show"), 2200); };
+      ["mousemove", "touchstart"].forEach(e => window.addEventListener(e, wake, { passive: true }));
+      fs.addEventListener("click", () => {
+        if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        else (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+        document.getElementById("unity-canvas").focus();
+      });
+      document.addEventListener("fullscreenchange", () => { fs.title = document.fullscreenElement ? "Leave full screen" : "Full screen"; });
+      wake();
     }
 
     const canvas = document.getElementById("unity-canvas");
