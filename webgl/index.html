@@ -67,7 +67,7 @@
 
   <script>
     // Where the heavy files live (Cloudflare R2); the small ones sit beside this page
-    const HEAVY = "https://pub-253d7b65c9834b42bca1ab286a1a2e85.r2.dev/webgl-demo/v1/Build/";
+    const HEAVY = "https://pub-253d7b65c9834b42bca1ab286a1a2e85.r2.dev/webgl-demo/v2/Build/";
     const TOTAL_MB = 286;   // the three heavy files together (shown as "x MB / y MB")
 
     // A hero breathing on the loading screen (the site's own drawings), a different one each time
@@ -140,7 +140,7 @@
       streamingAssetsUrl: "StreamingAssets",
       companyName: "Shamagon",
       productName: "Shamagon Demo",
-      productVersion: "1",
+      productVersion: "2",
       showBanner: (msg, type) => { if (type === "error") fail(msg); },
     };
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) config.devicePixelRatio = 1;
