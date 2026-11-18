@@ -1,0 +1,98 @@
+{
+  "canvas": [
+    512,
+    512
+  ],
+  "footAnchor": [
+    256,
+    480
+  ],
+  "scale": 0.85,
+  "method": "Six generated key poses registered at feet, with native browser gaze deformation and whip effects.",
+  "registration": [
+    {
+      "pose": 0,
+      "sourceBounds": [
+        74,
+        9,
+        500,
+        511
+      ],
+      "sourceFeetCenter": 291.47740112994353,
+      "offset": [
+        69,
+        51
+      ]
+    },
+    {
+      "pose": 1,
+      "sourceBounds": [
+        553,
+        9,
+        980,
+        511
+      ],
+      "sourceFeetCenter": 771.3156660412758,
+      "offset": [
+        68,
+        51
+      ]
+    },
+    {
+      "pose": 2,
+      "sourceBounds": [
+        1029,
+        10,
+        1479,
+        511
+      ],
+      "sourceFeetCenter": 1261.041095890411,
+      "offset": [
+        56,
+        52
+      ]
+    },
+    {
+      "pose": 3,
+      "sourceBounds": [
+        30,
+        518,
+        537,
+        1016
+      ],
+      "sourceFeetCenter": 320.631781290047,
+      "offset": [
+        6,
+        54
+      ]
+    },
+    {
+      "pose": 4,
+      "sourceBounds": [
+        564,
+        515,
+        985,
+        1017
+      ],
+      "sourceFeetCenter": 778.7727879057359,
+      "offset": [
+        71,
+        51
+      ]
+    },
+    {
+      "pose": 5,
+      "sourceBounds": [
+        1040,
+        519,
+        1457,
+        1016
+      ],
+      "sourceFeetCenter": 1264.1533909877105,
+      "offset": [
+        63,
+        55
+      ]
+    }
+  ]
+}

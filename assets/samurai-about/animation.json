@@ -1,0 +1,18 @@
+{
+  "width": 512,
+  "height": 640,
+  "idleFrames": 24,
+  "idleFps": 12,
+  "jumpDrawings": 4,
+  "seatAnchor": [
+    256,
+    440
+  ],
+  "groundAnchor": [
+    256,
+    600
+  ],
+  "method": "Generated sitting pose and four jump drawings; registered fixed-size sprites; breathing idle frames use a controlled mesh deformation. Standing uses the supplied reference.",
+  "aboutPose": "presenting.webp (static happy standing presentation pose)",
+  "return": "Upward jump with synchronized panel camera; seated idle restored on completion"
+}

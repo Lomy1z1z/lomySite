@@ -1,0 +1,329 @@
+@font-face {
+  font-family: "Spirit Caps";
+  src: url("assets/fonts/lmromancaps10-regular.otf") format("opentype");
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Spirit Text";
+  src: url("assets/fonts/lmroman10-regular.otf") format("opentype");
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink: #0d1225;
+  --paper: #f2edff;
+  --muted: #bcb8d9;
+  --red: #a48be9;
+  --line: #8178ae55;
+  --display: "Spirit Caps", Georgia, serif;
+  --body: "Spirit Text", Georgia, serif;
+  --spirit-teal: #98e9e4;
+  --spirit-gold: #f0cd9b;
+  --spirit-subtle: #c3bbdc;
+}
+html { scroll-padding-top: 78px; }
+.site-header {
+  position: fixed;
+  background: linear-gradient(90deg,#11152af5,#15132aec);
+  border-bottom: 1px solid #9b9cdf45;
+}
+.site-header nav a { font-size: 13px; }
+.site-header nav a[aria-current="location"] { color: var(--spirit-teal); }
+.site-header nav .nav-download,
+.button-red {
+  background: linear-gradient(110deg,#594595,#433d80);
+  color: #fff6ff;
+}
+.button-red:hover { background: #6b52a5; }
+.brand-mark { color: var(--spirit-teal); }
+.wordmark { font-size: clamp(19px,2.15vw,30px); letter-spacing: .09em; }
+.hero h1 { font-size: clamp(47px,5.1vw,88px); letter-spacing: -.055em; }
+.hero-tagline { font-size: clamp(19px,2.25vw,37px); letter-spacing: .01em; }
+.hero-tagline em, .intro-heading h2 em { color: var(--spirit-gold); }
+.hero-description { font-size: 15px; line-height: 1.58; }
+.intro-heading h2 { font-size: clamp(23px,2.5vw,34px); }
+
+.characters-section, .download-section {
+  color: var(--paper);
+  color-scheme: dark;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 88% 12%,#42407a60,transparent 54%),
+    radial-gradient(ellipse at 4% 65%,#245d7a48,transparent 53%),
+    linear-gradient(145deg,#191b39,#101429 58%,#1c1733);
+}
+.characters-section::before { height: 1px; top: 0; clip-path: none; background: #a0a8f65e; }
+.characters-section::after, .download-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("assets/anime/spirit-contours.svg") right -64px top -140px / min(62vw,740px) auto no-repeat;
+  opacity: .65;
+}
+.download-section::before { background-position: left -90px bottom -175px; }
+.section-heading h2 { font-size: clamp(27px,3.5vw,53px); line-height: 1.12; }
+.section-heading h2 em, .world-content h2 em, .download-copy h2 em { color: var(--spirit-teal); }
+.section-heading .overline, .download-copy .overline, .character-lore .overline,
+.ability .overline, .character-eyebrow, .character-spirit, .release-status { color: var(--spirit-gold); }
+.section-heading>p, .character-description, .ability p, .character-age,
+.character-controls>span, .character-footnote, .character-footnote>span,
+.personality-block>p, .origin-block p, .download-card>p:not(.download-note),
+.download-note { color: var(--spirit-subtle); }
+.character-tabs { background: #15192f; }
+.character-tabs button { color: #e8e2fa; }
+.character-tabs button:hover { background: #293456; }
+.character-tabs button[aria-selected=true] {
+  background: linear-gradient(145deg,color-mix(in srgb,var(--tab-color) 24%,#17213c),#192440);
+  color: #fff6ff;
+}
+.tab-label { font-size: clamp(11px,1.14vw,17px); }
+.tab-label small, .character-tabs button[aria-selected=true] .tab-label small { color: var(--spirit-subtle); font-size: 8px; }
+.character-panel {
+  background: radial-gradient(ellipse at 12% 6%,#333364,#1b2140 48%,#13182e);
+  box-shadow: 0 12px 60px #04071660;
+}
+.character-copy h3 { font-size: clamp(35px,5.4vw,80px); line-height: .98; letter-spacing: -.035em; }
+.character-line { color: var(--spirit-teal); font-size: 21px; line-height: 1.28; }
+.character-age strong { color: var(--paper); }
+.ability, .character-lore, .origin-block { border-color: var(--line); }
+.ability h4 { font-size: 18px; }
+.character-controls button { border-color: var(--line); color: var(--spirit-teal); }
+.character-controls button:hover { background: #414779; }
+.character-lore { background: linear-gradient(120deg,#202647,#1a1c37 75%); }
+.origin-block h4 { color: #ede3ff; font-size: 24px; }
+.personality-traits>span { color: #ded1fc; background: #50427352; border-color: var(--line); }
+.character-description, .ability p, .personality-block>p, .origin-block p,
+.world-content>p:not(.overline):not(.world-lead), .dossier-heading>p:last-child,
+.world-rules p, .release-principle p, .campaign-route p, .crew-scene p,
+.download-card>p:not(.download-note), .game-intro>p { font-size: 15px; line-height: 1.62; }
+.overline, .character-lore .overline, .ability .overline, .character-eyebrow, .character-spirit,
+.character-age, .release-status, .rule-index { font-size: 10px; }
+.world-content h2, .download-copy h2 {
+  font-size: clamp(34px,4.75vw,77px);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+.world-dossier { background: radial-gradient(ellipse at 94% 68%,#2f285953,transparent 58%); }
+.dossier-heading h3, .campaign-heading h3 { font-size: clamp(25px,3.5vw,52px); line-height: 1.08; }
+.world-rules h4, .release-principle h4, .campaign-route h4 { font-size: 23px; line-height: 1.14; }
+.crew-scene { background: #1b203c; border-color: var(--line); }
+.crew-scene h4 { color: #e9ddff; font-size: clamp(23px,3vw,38px); line-height: 1.04; }
+.download-rune { color: #b2abff4d; }
+.download-copy>p:not(.overline) { color: var(--spirit-teal); }
+.download-card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: clamp(23px,3vw,44px);
+  background: linear-gradient(155deg,#28264cee,#191f39ee);
+  box-shadow: inset 0 0 30px #a38cf211,0 12px 40px #080b204f;
+}
+.download-card h3 { color: #f1e9ff; font-size: clamp(25px,3vw,41px); line-height: 1.1; }
+.button-unavailable { color: #ded3ed; background: #414267; }
+.download-note { font-size: 12px; }
+:focus-visible { outline: 2px solid var(--spirit-teal); outline-offset: 4px; }
+[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+
+.spirit-portal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  --portal-tone: #a2afff;
+  --travel: 1;
+}
+.spirit-portal.is-active { display: grid; place-items: center; }
+.spirit-portal[data-direction="back"] { --travel: -1; }
+.portal-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 48%,color-mix(in srgb,var(--portal-tone) 38%,#24234a),transparent 50%),
+    url("assets/anime/spirit-contours.svg") center / 480px auto,
+    linear-gradient(115deg,#100f27,#242449 58%,#0d132a);
+  animation: spirit-cover 880ms ease-in-out both;
+}
+.portal-seal {
+  width: min(59vw,47vh);
+  stroke: var(--portal-tone);
+  stroke-width: .8;
+  filter: drop-shadow(0 0 13px var(--portal-tone));
+  animation: spirit-seal 880ms ease-in-out both;
+}
+.portal-traveler {
+  position: absolute;
+  z-index: 1;
+  left: calc(50% - clamp(53px,8vw,100px));
+  top: calc(50% - clamp(67px,10vw,125px));
+  width: clamp(106px,16vw,200px);
+  aspect-ratio: 4/5;
+  animation: spirit-leap 880ms cubic-bezier(.25,.62,.44,.96) both;
+}
+.portal-traveler img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scaleX(var(--travel));
+  opacity: 0;
+  filter: drop-shadow(0 0 15px var(--portal-tone));
+}
+.portal-traveler[data-pose="0"] img:nth-child(1),
+.portal-traveler[data-pose="1"] img:nth-child(2),
+.portal-traveler[data-pose="2"] img:nth-child(3),
+.portal-traveler[data-pose="3"] img:nth-child(4),
+.portal-traveler[data-pose="4"] img:nth-child(5) { opacity: 1; }
+@keyframes spirit-cover {
+  0%,100% { opacity: 0; }
+  39%,59% { opacity: 1; }
+}
+@keyframes spirit-seal {
+  0% { opacity: 0; transform: rotate(-28deg) scale(.22); }
+  43% { opacity: .92; transform: rotate(0) scale(1); }
+  70% { opacity: .56; }
+  100% { opacity: 0; transform: rotate(33deg) scale(1.65); }
+}
+@keyframes spirit-leap {
+  0% { opacity: 0; transform: translate(calc(var(--travel) * -37vw),30vh) scale(.68); }
+  15% { opacity: 1; }
+  46% { transform: translate(0,-13vh) scale(1); }
+  73% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(var(--travel) * 38vw),21vh) scale(.66); }
+}
+
+
+@media (max-width: 760px) {
+  html { scroll-padding-top: 72px; }
+  .site-header { background: #11152af5; }
+  .site-header nav { background: #171932fa; }
+  .hero h1 { font-size: clamp(44px,11.4vw,75px); }
+  .hero-tagline { font-size: clamp(18px,5vw,28px); }
+  .game-intro>p { margin-left: 0; }
+  .section-heading h2 { font-size: clamp(26px,7vw,45px); }
+  .character-copy h3 { font-size: clamp(36px,10vw,69px); }
+  .character-line { max-width: none; }
+  .tab-label { font-size: clamp(10px,2.9vw,16px); }
+  .tab-label small, .character-tabs button[aria-selected=true] .tab-label small { font-size: 7px; }
+  .world-content h2, .download-copy h2 { font-size: clamp(32px,9vw,61px); }
+  .world-hero { min-height: min(830px,calc(100vw * .56 + 500px)); }
+  .world-content { padding-top: calc(100vw * .48); }
+  .origin-block { border-color: var(--line); }
+  .download-card { border: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spirit-portal.is-active { display: none; }
+}
+
+/* The original attack sprites act on whichever character control was used. */
+.shaman-move {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  overflow: hidden;
+  pointer-events: none;
+}
+.shaman-move-actor, .shaman-release, .shaman-impact,
+.shaman-projectile, .shaman-captured { position: absolute; }
+.shaman-move-actor {
+  z-index: 2;
+  object-fit: contain;
+  transform: translateX(-50%) scaleX(var(--facing));
+  filter: drop-shadow(0 0 12px color-mix(in srgb,var(--move-tone) 48%,transparent));
+}
+.chibi-stage.is-performing-move > :is(img,canvas) { visibility: hidden; }
+.is-move-target { outline: 1px solid #d9c6ff; outline-offset: 3px; }
+.is-move-target.is-whip-captured { opacity: 0; }
+.shaman-release, .shaman-impact {
+  z-index: 3;
+  width: 36px;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 1px solid var(--move-tone);
+  border-radius: 50%;
+  background: radial-gradient(circle,#fff7 0%,transparent 63%);
+  box-shadow: 0 0 18px var(--move-tone), inset 0 0 12px var(--move-tone);
+}
+.shaman-impact { width: 48px; }
+.shaman-projectile {
+  z-index: 4;
+  translate: -50% -50%;
+  width: 76px;
+  max-width: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0 7px var(--move-tone));
+}
+.shaman-arrow { width: 89px; }
+.shaman-slash {
+  width: clamp(65px,var(--beam-length),240px);
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(0deg,transparent,var(--move-tone),white,transparent);
+  box-shadow: 0 0 12px var(--move-tone);
+}
+.shaman-magic, .shaman-fire {
+  width: 23px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle,#fff9ee,var(--move-tone) 42%,transparent 73%);
+  box-shadow: 0 0 20px var(--move-tone);
+}
+.shaman-magic { border: 1px solid var(--move-tone); }
+.shaman-fire { width: 31px; border-radius: 70% 45% 60% 45%; }
+.shaman-whip { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; }
+.shaman-whip path {
+  stroke: var(--move-tone);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  fill: none;
+  filter: drop-shadow(0 0 7px #f63072);
+}
+.shaman-captured {
+  z-index: 4;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--move-tone);
+  border-radius: 5px;
+  background: #3a1d36;
+  box-shadow: 0 0 15px var(--move-tone);
+  color: #ffebf4;
+  font: 700 12px var(--body);
+  text-align: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shaman-move { display: none; }
+  .chibi-stage.is-performing-move > :is(img,canvas) { visibility: visible; }
+}
+
+.wordmark img {
+  display: block;
+  width: clamp(128px, 14vw, 178px);
+  height: auto;
+}
+
+.hero h1.hero-wordmark {
+  width: clamp(310px, 37vw, 530px);
+  max-width: 100%;
+  margin: 0 0 22px;
+}
+
+.hero-wordmark img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 5px 18px #090b22a6);
+}
+
+@media (max-width: 760px) {
+  .hero h1.hero-wordmark {
+    width: min(100%, 440px);
+    margin-bottom: 16px;
+  }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Shamagon - Browser Demo</title>
+  <link rel="icon" href="../assets/brand/shamagon-spirit-logo.webp">
+  <style>
+    @font-face { font-family: "Shamagon Brush"; src: url("../assets/fonts/shamagon-brush.woff") format("woff"); font-display: swap; }
+    @font-face { font-family: "Open Sans"; src: url("../assets/fonts/open-sans-regular.woff") format("woff"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Open Sans"; src: url("../assets/fonts/open-sans-semibold.woff") format("woff"); font-weight: 600; font-display: swap; }
+    :root { --ink: #0b1529; --paper: #fff4db; --muted: #b7cadc; --teal: #86f6ee; --cyan: #64e8eb; --lilac: #b9abff;
+            --stroke: linear-gradient(112deg, #fff5dc 12%, #ddf6ee 52%, #61edea 95%); }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--ink); color: var(--paper); overflow: hidden; font-family: "Open Sans", system-ui, sans-serif; }
+    #unity-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: #000; }
+
+    /* The loading screen */
+    #loader { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(8px, 2vh, 18px);
+              padding: 16px; text-align: center; z-index: 2; transition: opacity .6s ease;
+              background: radial-gradient(ellipse at 50% 35%, #1d3a66cc 0%, #0b1529f2 62%), url("../assets/spirit-realm.webp") center / cover no-repeat, var(--ink); }
+    #loader.done { opacity: 0; pointer-events: none; }
+    #logo { width: min(340px, 62vw); filter: drop-shadow(0 0 18px #64e8eb55); }
+    #hero-wrap { position: relative; height: min(34vh, 300px); aspect-ratio: 512 / 640; }
+    #hero-wrap::before { content: ""; position: absolute; left: 10%; right: 10%; bottom: 2%; height: 12%; border-radius: 50%;
+                         background: radial-gradient(#86f6ee66, transparent 70%); filter: blur(4px); animation: pulse 2.4s ease-in-out infinite; }
+    #hero { position: relative; width: 100%; height: 100%; object-fit: contain; }
+    #hero-name { font-family: "Shamagon Brush", "Open Sans", sans-serif; font-size: clamp(22px, 4vh, 34px); letter-spacing: .12em;
+                 background: var(--stroke); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #bar { width: min(560px, 86vw); height: 14px; border-radius: 10px; background: #ffffff14; border: 1px solid #79ccf43b; overflow: hidden; }
+    #fill { height: 100%; width: 0%; border-radius: 10px; background: linear-gradient(90deg, #61edea, #b9abff); box-shadow: 0 0 14px #64e8eb88;
+            transition: width .3s ease; position: relative; }
+    #fill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, #ffffff55, transparent);
+                   animation: shine 1.6s linear infinite; }
+    #status { font-weight: 600; font-size: clamp(14px, 2.2vh, 18px); color: var(--paper); min-height: 1.4em; }
+    #status small { color: var(--muted); font-weight: 400; }
+    #tip { max-width: min(560px, 88vw); min-height: 3em; font-size: clamp(13px, 2vh, 16px); color: var(--teal); transition: opacity .5s ease; }
+    #tip b { color: var(--paper); }
+    #note { font-size: 12px; color: var(--muted); opacity: .8; }
+    #error { display: none; max-width: 520px; color: #ffb4b4; }
+    @keyframes shine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+    @keyframes pulse { 0%, 100% { opacity: .55; transform: scaleX(.9); } 50% { opacity: 1; transform: scaleX(1.05); } }
+    .summon #fill { background: linear-gradient(90deg, #b9abff, #61edea, #b9abff); background-size: 200% 100%; animation: flow 1.2s linear infinite; }
+    @keyframes flow { from { background-position: 0 0; } to { background-position: 200% 0; } }
+  </style>
+</head>
+<body>
+  <canvas id="unity-canvas" tabindex="-1"></canvas>
+
+  <div id="loader">
+    <img id="logo" src="../assets/brand/shamagon-spirit-logo.webp" alt="Shamagon">
+    <div id="hero-wrap"><img id="hero" alt=""></div>
+    <div id="hero-name"></div>
+    <div id="bar"><div id="fill"></div></div>
+    <div id="status">Opening the spirit gate...</div>
+    <div id="tip"></div>
+    <div id="note">First load only: next time the demo opens almost instantly.</div>
+    <div id="error"></div>
+  </div>
+
+  <script>
+    // Where the heavy files live (Cloudflare R2); the small ones sit beside this page
+    const HEAVY = "https://pub-253d7b65c9834b42bca1ab286a1a2e85.r2.dev/webgl-demo/v1/Build/";
+    const TOTAL_MB = 286;   // the three heavy files together (shown as "x MB / y MB")
+
+    // A hero breathing on the loading screen (the site's own drawings), a different one each time
+    const heroes = [
+      { name: "BLAZE", frames: i => `../assets/blaze/idle-${String(i).padStart(2, "0")}.webp`, count: 24, fps: 12 },
+      { name: "ASH",   frames: i => `../assets/idle-${String(i).padStart(2, "0")}.webp`,       count: 24, fps: 12 },
+    ];
+    const hero = heroes[Math.floor(Math.random() * heroes.length)];
+    const heroImg = document.getElementById("hero");
+    document.getElementById("hero-name").textContent = hero.name;
+    const frames = Array.from({ length: hero.count }, (_, i) => { const im = new Image(); im.src = hero.frames(i); return im; });
+    let frame = 0;
+    heroImg.src = frames[0].src;
+    const heroTimer = setInterval(() => { frame = (frame + 1) % hero.count; heroImg.src = frames[frame].src; }, 1000 / hero.fps);
+
+    // Tips while it loads
+    const tips = [
+      "Match <b>3 or more runes</b> of one color to pop them: every pop strikes the enemy.",
+      "Every <b>3 COMBO</b>, a <b>special rune</b> lights up on the board.",
+      "The clock counts down: the enemy attacks every <b>10 seconds</b>.",
+      "Clear the <b>whole board</b> to win <b>5 extra seconds</b> on the clock.",
+      "At <b>25 COMBO</b> your <b>ULTIMATE</b> is ready: double-tap your hero.",
+      "<b>Shield</b> blocks an attack, <b>Blast</b> burns, <b>Heal</b> restores, <b>Stun</b> cancels the next attack.",
+      "Pop runes within <b>5 seconds</b> or your combo is lost.",
+    ];
+    const tipEl = document.getElementById("tip");
+    let tip = Math.floor(Math.random() * tips.length);
+    tipEl.innerHTML = tips[tip];
+    const tipTimer = setInterval(() => {
+      tipEl.style.opacity = 0;
+      setTimeout(() => { tip = (tip + 1) % tips.length; tipEl.innerHTML = tips[tip]; tipEl.style.opacity = 1; }, 500);
+    }, 5000);
+
+    const fill = document.getElementById("fill"), status = document.getElementById("status"), loader = document.getElementById("loader");
+    let summoning = false;
+    function progress(p) {
+      fill.style.width = Math.max(2, 100 * p) + "%";
+      if (p < 0.999) status.innerHTML = `Downloading the demo... <small>${Math.round(p * TOTAL_MB)} MB / ${TOTAL_MB} MB</small>`;
+      else if (!summoning) { summoning = true; loader.classList.add("summon"); status.textContent = "Summoning the spirits..."; }
+    }
+    function fail(message) {
+      const e = document.getElementById("error");
+      e.style.display = "block";
+      e.textContent = "The demo couldn't start: " + message;
+      status.textContent = "";
+    }
+
+    const canvas = document.getElementById("unity-canvas");
+    const config = {
+      dataUrl: HEAVY + "WebGLDemo.data.unityweb",
+      frameworkUrl: HEAVY + "WebGLDemo.framework.js.unityweb",
+      codeUrl: HEAVY + "WebGLDemo.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "Shamagon",
+      productName: "Shamagon Demo",
+      productVersion: "1",
+      showBanner: (msg, type) => { if (type === "error") fail(msg); },
+    };
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) config.devicePixelRatio = 1;
+
+    const script = document.createElement("script");
+    script.src = "Build/WebGLDemo.loader.js";
+    script.onload = () => {
+      createUnityInstance(canvas, config, progress).then(() => {
+        clearInterval(heroTimer); clearInterval(tipTimer);
+        loader.classList.add("done");
+        setTimeout(() => loader.remove(), 700);
+        canvas.focus();
+      }).catch(fail);
+    };
+    script.onerror = () => fail("its loader is missing.");
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

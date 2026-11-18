@@ -1,0 +1,92 @@
+{
+  "canvas": [
+    512,
+    512
+  ],
+  "hipAnchor": [
+    256,
+    350
+  ],
+  "scale": 0.84,
+  "method": "Six generated seated key drawings; common hip registration and native web breathing, no claim of hand-drawn inbetweens.",
+  "registration": [
+    {
+      "pose": 0,
+      "sourceBounds": [
+        120,
+        18,
+        445,
+        517
+      ],
+      "sourceHip": [
+        295,
+        355
+      ]
+    },
+    {
+      "pose": 1,
+      "sourceBounds": [
+        608,
+        15,
+        936,
+        515
+      ],
+      "sourceHip": [
+        789,
+        355
+      ]
+    },
+    {
+      "pose": 2,
+      "sourceBounds": [
+        1043,
+        13,
+        1449,
+        511
+      ],
+      "sourceHip": [
+        1255,
+        350
+      ]
+    },
+    {
+      "pose": 3,
+      "sourceBounds": [
+        135,
+        528,
+        499,
+        1005
+      ],
+      "sourceHip": [
+        292,
+        851
+      ]
+    },
+    {
+      "pose": 4,
+      "sourceBounds": [
+        615,
+        532,
+        976,
+        999
+      ],
+      "sourceHip": [
+        795,
+        861
+      ]
+    },
+    {
+      "pose": 5,
+      "sourceBounds": [
+        1088,
+        530,
+        1424,
+        1013
+      ],
+      "sourceHip": [
+        1268,
+        870
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "canvas": [
+    512,
+    640
+  ],
+  "idleFrames": 24,
+  "idleFps": 12,
+  "snapKeyDrawings": 6,
+  "snapFrames": [
+    0,
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    4,
+    4,
+    5,
+    5,
+    0
+  ],
+  "snapTimesMs": [
+    0,
+    90,
+    160,
+    240,
+    300,
+    345,
+    380,
+    430,
+    500,
+    580,
+    660,
+    730
+  ],
+  "releaseMs": 380,
+  "method": "Six generated registered seated drawings, with mesh-derived breathing idle. Repeated key drawings use authored timing; no claim of twelve uniquely drawn snap frames."
+}

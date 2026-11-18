@@ -1,0 +1,376 @@
+@font-face {
+  font-family: "Shamagon Brush";
+  src: url("assets/fonts/shamagon-brush.woff") format("woff");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("assets/fonts/open-sans-regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("assets/fonts/open-sans-semibold.woff") format("woff");
+  font-weight: 500 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("assets/fonts/open-sans-bold.woff") format("woff");
+  font-weight: 700 900;
+  font-display: swap;
+}
+
+:root {
+  --ink: #0b1529;
+  --paper: #fff4db;
+  --muted: #b7cadc;
+  --red: #64e8eb;
+  --line: #79ccf43b;
+  --display: "Shamagon Brush", "Open Sans", sans-serif;
+  --body: "Open Sans", system-ui, sans-serif;
+  --spirit-teal: #86f6ee;
+  --spirit-gold: #f7dec1;
+  --spirit-subtle: #c1d4e5;
+  --lilac: #b9abff;
+  --stroke: linear-gradient(112deg,#fff5dc 12%,#ddf6ee 52%,#61edea 95%);
+  --cut: polygon(13px 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%, 0 13px);
+  --gutter: max(6vw, calc((100% - 1320px) / 2));
+}
+
+body {
+  background: var(--ink);
+  font-size: 15px;
+}
+
+:is(.hero-tagline, .intro-heading h2, .section-heading h2, .character-copy h3,
+  .world-content h2, .dossier-heading h3, .campaign-heading h3, .download-copy h2) {
+  color: var(--paper);
+  font-synthesis: none;
+  letter-spacing: .015em;
+}
+
+:is(.hero-tagline, .intro-heading h2, .section-heading h2, .world-content h2,
+  .dossier-heading h3, .campaign-heading h3, .download-copy h2) em {
+  color: var(--spirit-teal);
+  background: var(--stroke) text;
+  -webkit-text-fill-color: transparent;
+}
+
+:is(.section-heading, .dossier-heading, .campaign-heading) h2,
+:is(.dossier-heading, .campaign-heading) h3 { text-wrap: balance; }
+
+.site-header {
+  height: 76px;
+  padding-inline: var(--gutter);
+  background: linear-gradient(100deg,#101f38fa,#131a33fa 63%,#201e3dfa);
+  border-color: #81eee943;
+  box-shadow: 0 8px 28px #03091852;
+}
+
+.site-header .wordmark img { width: clamp(124px, 13vw, 173px); }
+
+.site-header nav a {
+  color: #eaf3f9;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .025em;
+}
+
+.site-header nav a[aria-current="location"]::after { transform: scaleX(1); }
+.site-header nav>a>span { color: #8bc6d8; font-size: 9px; }
+
+.site-header nav .nav-download, .button-red {
+  color: #102038;
+  background: var(--stroke);
+  clip-path: var(--cut);
+}
+
+.site-header nav .nav-download>span { color: #24496c; }
+.site-header nav .nav-download:hover, .button-red:hover { background: #c9fff6; }
+:is(.site-header nav .nav-download, .button):focus-visible {
+  clip-path: none;
+  outline-color: var(--spirit-teal);
+}
+
+.button {
+  min-height: 52px;
+  padding-inline: 25px;
+  font-size: 13px;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.hero {
+  height: min(940px,max(720px,100svh));
+  min-height: 0;
+  background: #101b36;
+}
+
+.hero-art {
+  inset: 76px 0 0;
+  height: auto;
+  background-size: cover;
+  background-position: 58% center;
+  mask-image: none;
+  animation: none;
+}
+
+.hero-shade {
+  background:
+    linear-gradient(90deg,#0a1429fa 0%,#0a1429e8 14%,#0a142992 35%,#101a3400 67%),
+    linear-gradient(0deg,var(--ink),#0b15291a 30%,transparent 78%,#0b15294d);
+}
+
+.hero-content {
+  left: var(--gutter);
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-39%);
+  width: min(40vw,530px);
+  max-width: none;
+}
+
+.hero h1.hero-wordmark { width: 100%; margin-bottom: 20px; margin-left: -8px; }
+.hero-overline { margin-bottom: 13px; color: #d0e9f4; font-size: 10px; }
+.hero-tagline { font-size: clamp(24px,3.2vw,48px); line-height: 1.04; }
+.hero-description { color: #d4e5f2; max-width: 40ch; margin: 18px 0 24px; }
+.hero-status { font-size: 9px; color: var(--muted); }
+.hero-status i, .release-status i { background: var(--spirit-teal); box-shadow: 0 0 11px #67edec; }
+.hero-bottom { left: var(--gutter); }
+.scroll-cue { color: var(--spirit-teal); font-size: 10px; }
+.scroll-line { background: linear-gradient(var(--spirit-teal),transparent); }
+
+.game-intro {
+  max-width: none;
+  padding: 46px var(--gutter);
+  gap: clamp(18px,4vw,64px);
+  background: linear-gradient(100deg,#101d36,#102d44 55%,#192043);
+  border-block: 1px solid var(--line);
+}
+
+.intro-heading .overline, .world-content .overline, .dossier-heading>.overline,
+.campaign-heading .overline, .crew-scene figcaption .overline,
+.release-principle .overline, .rule-index { color: var(--spirit-teal); font-size: 10px; }
+
+.intro-heading h2 { font-size: clamp(25px,3vw,43px); }
+.game-intro>p { color: var(--spirit-subtle); max-width: 48ch; }
+.loop-mark { color: var(--paper); gap: 12px; font-size: clamp(14px,1.5vw,22px); }
+.loop-mark svg { width: 16px; height: 16px; fill: none; stroke: var(--spirit-teal); stroke-width: 1.5; }
+
+.characters-section {
+  padding: clamp(55px,7vw,102px) var(--gutter);
+  background:
+    radial-gradient(ellipse at 14% 26%,#193855 0,transparent 58%),
+    radial-gradient(ellipse at 100% 80%,#27204c 0,transparent 50%),var(--ink);
+}
+
+.section-heading { gap: 24px; }
+.section-heading h2 { font-size: clamp(34px,5.2vw,75px); }
+.section-heading>p { color: var(--muted); font-size: 13px; }
+
+.character-tabs {
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  margin-bottom: 8px;
+}
+
+.character-tabs button {
+  background: linear-gradient(144deg,#182b46,#111e34);
+  border: 1px solid var(--line);
+  height: 82px;
+  clip-path: var(--cut);
+}
+
+.character-tabs button:last-child { border-right: 1px solid var(--line); }
+.character-tabs button:hover { background: #24445f; }
+.character-tabs button[aria-selected=true] {
+  background: linear-gradient(145deg,color-mix(in srgb,var(--tab-color) 32%,#142943),#193249);
+  border-color: var(--tab-color);
+  box-shadow: inset 0 2px var(--tab-color);
+}
+
+.character-tabs button:focus-visible { clip-path: none; outline-offset: -4px; }
+.tab-label { font-size: clamp(12px,1.35vw,21px); letter-spacing: .06em; }
+.tab-label small, .character-tabs button[aria-selected=true] .tab-label small { font-size: 9px; }
+.tab-number, .tab-cross { color: #adc3dd; }
+.character-panel {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg,color-mix(in srgb,var(--character-color) 14%,#162740),#0e1b32 55%),
+    #14253e;
+}
+
+.character-copy h3 { color: var(--paper); font-size: clamp(44px,6.6vw,90px); }
+.character-eyebrow { margin-bottom: 22px; }
+.character-eyebrow>span:first-child {
+  color: color-mix(in srgb,var(--character-color) 63%,#fff4db);
+}
+.character-eyebrow>span:last-child { font-size: 9px; }
+.character-line { font: 600 clamp(18px,2vw,23px)/1.35 var(--body); }
+.character-age { margin-block: 18px; }
+.character-age>span:last-child { font-size: 9px; }
+.ability h4 { font-size: 22px; }
+.character-controls>span { font-size: 11px; letter-spacing: .035em; }
+.character-controls button { min-width: 44px; min-height: 44px; background: #122b44; }
+.character-controls button:hover { background: #25536a; }
+.character-lore { background: linear-gradient(120deg,#142b43,#161e39); }
+.personality-traits>span { font-size: 11px; letter-spacing: .015em; }
+.chibi-companion>span { background: #0b2037ed; color: #d4f9fc; border-bottom: 1px solid #83eae96e; font-size: 9px; }
+
+.world-section {
+  background: radial-gradient(ellipse at 90% 48%,#1d254a,transparent 64%),var(--ink);
+}
+
+.world-hero {
+  min-height: clamp(610px,63vw,850px);
+  border-top: 1px solid var(--line);
+}
+
+.world-art { background-size: cover; background-position: 62% center; }
+.world-shade {
+  background:
+    linear-gradient(90deg,#0b1529f2,#0b1529c9 24%,#0b15294d 52%,transparent 78%),
+    linear-gradient(0deg,var(--ink),transparent 45%);
+}
+
+.world-content { padding-inline: var(--gutter) 25px; }
+.world-content h2 { font-size: clamp(38px,5.5vw,83px); }
+.world-lead { color: var(--paper); }
+.world-caption { left: var(--gutter); right: var(--gutter); font-size: 9px; }
+.text-link, .site-footer>a:last-child { color: var(--spirit-teal); font-size: 12px; }
+
+.world-dossier {
+  max-width: none;
+  padding: clamp(48px,6vw,90px) var(--gutter);
+  background: url("assets/anime/spirit-contours.svg") right -110px top -150px / min(74vw,780px) auto no-repeat;
+}
+
+.dossier-heading h3, .campaign-heading h3 { font-size: clamp(29px,4.55vw,66px); }
+.world-rules { gap: 14px; }
+.world-rules article {
+  padding: clamp(18px,3vw,34px);
+  background: linear-gradient(137deg,#152c45,#141f37);
+  border: 1px solid var(--line);
+  clip-path: var(--cut);
+}
+
+.world-rules h4, .release-principle h4, .campaign-route h4, .crew-scene h4,
+.download-card h3, .origin-block h4 { color: var(--paper); text-transform: uppercase; }
+
+:is(.world-rules, .campaign-route, .crew-scene, .release-principle) p,
+.dossier-heading>p:last-child { color: var(--spirit-subtle); }
+
+.crew-scene { background: #152841; border: 1px solid var(--line); clip-path: var(--cut); }
+.release-principle { border-color: var(--spirit-teal); }
+.vision-tag, .route-planned { color: var(--lilac); }
+.vision-tag { border-color: var(--line); font-size: 9px; }
+.campaign-route { border-color: var(--line); }
+.campaign-route li+li { border-color: var(--line); }
+.campaign-route b { color: var(--spirit-teal); }
+.route-status { font-size: 9px; }
+.demo-scope, .site-footer { color: var(--muted); }
+.demo-scope strong { color: var(--paper); }
+
+.download-section {
+  grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);
+  padding: clamp(52px,8vw,110px) var(--gutter);
+  gap: clamp(26px,6vw,90px);
+  background:
+    radial-gradient(ellipse at 78% 35%,#294160 0,transparent 54%),
+    linear-gradient(135deg,#111d36,#172845 45%,#211d40);
+  border-top: 1px solid var(--line);
+}
+
+.download-copy h2 { font-size: clamp(38px,5.45vw,85px); margin: 17px 0 14px; }
+.download-copy>p:not(.overline) { font: 600 17px/1.55 var(--body); color: var(--spirit-subtle); }
+.download-chibi { max-width: none; margin: 23px 0 0; border: 1px solid var(--line); clip-path: var(--cut); }
+.download-chibi img { mask-image: none; }
+.download-card { background: linear-gradient(141deg,#18344fee,#111d35fa); border-color: #77daea54; border-radius: 0; }
+.download-card h3 { font-size: clamp(26px,3.3vw,46px); }
+.download-card .button { max-width: none; font-size: 11px; }
+.button-unavailable { color: #d1dce9; background: #283c55; }
+.release-version { color: var(--spirit-subtle); }
+.site-footer { padding-inline: var(--gutter); border-color: var(--line); }
+.site-footer>span { font-size: 11px; }
+
+.portal-veil {
+  background:
+    radial-gradient(ellipse at center,color-mix(in srgb,var(--portal-tone) 40%,#152e4e),transparent 52%),
+    url("assets/anime/spirit-contours.svg") center / 480px auto,
+    linear-gradient(119deg,#09162c,#193357 55%,#201a45);
+}
+
+.portal-seal { filter: drop-shadow(0 0 9px #82f7ff) drop-shadow(0 0 20px var(--portal-tone)); }
+
+@media (min-width: 761px) and (max-width: 1030px) {
+  .character-tabs { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+
+@media (max-width: 760px) {
+  :root { --gutter: clamp(17px,5vw,34px); }
+  html { scroll-padding-top: 72px; }
+
+  .site-header { height: 68px; padding-inline: var(--gutter); }
+  .menu-toggle { color: var(--spirit-teal); border-color: var(--line); background: #132744; }
+  .site-header nav { top: 68px; background: #13233cf9; border-bottom: 1px solid var(--line); }
+
+  .hero { height: auto; padding-top: clamp(272px,65vw,420px); }
+  .hero-art {
+    inset: 68px 0 auto;
+    height: clamp(250px,61vw,415px);
+    background-position: 58% center;
+    mask-image: linear-gradient(#000 58%, transparent 100%);
+  }
+
+  .hero-shade { background: linear-gradient(0deg,#0b1529 3%,#0b1529 24%,transparent 78%); }
+  .hero-content { position: relative; inset: auto; transform: none; width: auto; padding: 0 var(--gutter) 63px; }
+  .hero h1.hero-wordmark { width: min(100%,440px); margin-left: -5px; }
+  .hero-tagline { font-size: clamp(24px,6.5vw,42px); }
+  .hero-tagline br { display: initial; }
+  .hero-description { margin-top: 15px; }
+  .hero-bottom { bottom: 19px; left: var(--gutter); }
+  .hero-content .button { font-size: 12px; }
+
+  .game-intro { grid-template-columns: 1fr; gap: 18px; }
+  .intro-heading { display: block; }
+  .intro-heading .overline { margin: 0; }
+  .intro-heading h2 { margin: 10px 0 0; }
+  .game-intro>p { margin-left: 0; }
+  .section-heading>p { font-size: 12px; }
+  .character-tabs button { height: 67px; padding: 6px 4px; gap: 3px; border: 1px solid var(--line); }
+  .character-tabs img { width: 29px; flex-basis: 29px; height: 48px; }
+  .tab-label { font-size: clamp(10px,3.05vw,16px); gap: 4px; }
+  .tab-label small, .character-tabs button[aria-selected=true] .tab-label small { font-size: 7px; }
+  .tab-number, .tab-cross { display: none; }
+  .character-visual { aspect-ratio: 5/6; }
+  .character-copy h3 { font-size: clamp(40px,12vw,75px); }
+  .chibi-companion>span { font-size: 7px; }
+  .character-copy, .character-lore { padding-inline: 19px; }
+
+  .world-hero { min-height: 0; }
+  .world-art {
+    inset: 0 0 auto;
+    height: clamp(230px,65vw,440px);
+    mask-image: linear-gradient(#000 60%,transparent);
+  }
+
+  .world-shade { background: linear-gradient(0deg,var(--ink) 25%,transparent 83%); }
+  .world-content { padding: clamp(195px,56vw,380px) var(--gutter) 69px; }
+  .world-caption { font-size: 7px; }
+  .world-rules { grid-template-columns: 1fr; margin-top: 25px; }
+  .download-section { grid-template-columns: 1fr; }
+  .download-card .button { font-size: 11px; }
+}
+
+@media (max-width: 370px) {
+  .tab-label { font-size: 10px; }
+  .tab-label small, .character-tabs button[aria-selected=true] .tab-label small { font-size: 6px; }
+  .character-tabs img { width: 23px; flex-basis: 23px; }
+}

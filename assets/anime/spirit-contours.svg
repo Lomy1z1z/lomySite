@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="440" viewBox="0 0 440 440" fill="none">
+  <defs><pattern id="stars" width="110" height="110" patternUnits="userSpaceOnUse">
+    <path d="M28 25l3 7 7 3-7 3-3 7-3-7-7-3 7-3Z" stroke="#a5b7f8" opacity=".22"/>
+    <circle cx="81" cy="76" r="1.5" fill="#c8bafc" opacity=".4"/>
+  </pattern></defs>
+  <path fill="url(#stars)" d="M0 0h440v440H0Z"/>
+  <g stroke="#8e99e6" stroke-width=".65" opacity=".36">
+    <circle cx="220" cy="220" r="198" stroke-dasharray="2 8"/>
+    <circle cx="220" cy="220" r="182"/>
+    <circle cx="220" cy="220" r="145"/>
+    <path d="m220 64 135 78v156l-135 78-135-78V142Z M220 75l145 145-145 145L75 220Z"/>
+    <path d="M220 20v48m0 304v48M20 220h48m304 0h48"/>
+  </g>
+</svg>

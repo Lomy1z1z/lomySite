@@ -1,0 +1,29 @@
+{
+  "canvas": [
+    640,
+    640
+  ],
+  "floor": 600,
+  "idle": {
+    "frames": 24,
+    "fps": 12,
+    "method": "Subtle derived breathing; planted feet."
+  },
+  "throw": {
+    "keys": 8,
+    "key_times_ms": [
+      0,
+      70,
+      140,
+      210,
+      290,
+      360,
+      480,
+      620
+    ],
+    "duration_ms": 760,
+    "release_ms": 290,
+    "method": "Generated key poses, globally registered; no per-key scaling."
+  },
+  "notes": "Some illustration differences remain between throw keys. The projectile follows the actual target button rect on each display."
+}

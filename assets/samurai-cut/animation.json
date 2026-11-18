@@ -1,0 +1,89 @@
+{
+  "canvas": [
+    768,
+    640
+  ],
+  "groundAnchor": [
+    384,
+    600
+  ],
+  "drawings": 6,
+  "entry": "Existing approved About presenting sprite",
+  "timesMs": [
+    0,
+    90,
+    210,
+    320,
+    430,
+    520
+  ],
+  "method": "Six generated sword key drawings, extracted by connected component to retain complete blades and registered at the feet; no claim of uniquely drawn inbetween frames.",
+  "registration": [
+    {
+      "pose": 0,
+      "sourceBounds": [
+        26,
+        10,
+        476,
+        522
+      ],
+      "sourceFeetCenter": 219.8355625491739,
+      "scale": 0.926
+    },
+    {
+      "pose": 1,
+      "sourceBounds": [
+        555,
+        11,
+        934,
+        522
+      ],
+      "sourceFeetCenter": 219.73131014063654,
+      "scale": 0.926
+    },
+    {
+      "pose": 2,
+      "sourceBounds": [
+        1104,
+        2,
+        1489,
+        523
+      ],
+      "sourceFeetCenter": 215.5329341317365,
+      "scale": 0.926
+    },
+    {
+      "pose": 3,
+      "sourceBounds": [
+        66,
+        520,
+        418,
+        1011
+      ],
+      "sourceFeetCenter": 188.97956307258633,
+      "scale": 0.926
+    },
+    {
+      "pose": 4,
+      "sourceBounds": [
+        513,
+        530,
+        1017,
+        1011
+      ],
+      "sourceFeetCenter": 207.63900414937757,
+      "scale": 0.926
+    },
+    {
+      "pose": 5,
+      "sourceBounds": [
+        1085,
+        532,
+        1524,
+        1011
+      ],
+      "sourceFeetCenter": 189.48456568557071,
+      "scale": 0.926
+    }
+  ]
+}

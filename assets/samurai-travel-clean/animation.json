@@ -1,0 +1,29 @@
+{
+  "canvas": [
+    512,
+    640
+  ],
+  "seatAnchor": [
+    256,
+    440
+  ],
+  "keyDrawings": 6,
+  "rightTravel": [
+    3,
+    4,
+    5
+  ],
+  "leftTravel": [
+    0,
+    1,
+    2
+  ],
+  "phasesMs": {
+    "startled": 60,
+    "bracing": 240,
+    "relaxing": 650,
+    "idleReturn": 1040,
+    "complete": 1040
+  },
+  "method": "Six generated directional grip drawings, registered at the seat; runtime pose timing and small rotation around the seat anchor."
+}
