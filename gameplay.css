@@ -282,3 +282,72 @@
   .demo-bar-label { display: none; }
   .demo-action { padding: 0 11px; font-size: 12px; }
 }
+
+/* The trailer: its own section under the hero, and a window over the page from the hero's button */
+.game-button-ghost { background: #0b1529b3; color: var(--paper); box-shadow: inset 0 0 0 1px var(--spirit-teal); }
+.game-button-ghost:hover { background: #1b3352; color: var(--spirit-teal); }
+.trailer-section {
+  padding: clamp(56px,7vw,96px) var(--gutter) clamp(52px,7vw,90px);
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.trailer-section .section-heading { margin-bottom: clamp(20px,3vw,32px); }
+.trailer-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #4e6579;
+  border-radius: 7px;
+  background: #000;
+  box-shadow: 0 24px 60px #0006, 0 0 0 1px #9ae8e214;
+}
+.trailer-frame video, .trailer-dialog video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
+.trailer-dialog {
+  width: min(1280px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  overflow: visible;
+  border: 1px solid #4e6579;
+  border-radius: 7px;
+  background: #000;
+  color: var(--paper);
+}
+.trailer-dialog::backdrop { background: #060c18e6; }
+.trailer-dialog video { max-height: calc(100vh - 34px); border-radius: 7px; }
+.trailer-dialog-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #79ccf466;
+  border-radius: 8px;
+  background: #0b1529cc;
+  color: var(--paper);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.trailer-dialog-close:hover { background: #1b3352; color: var(--spirit-teal); }
+.trailer-play {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 9vw, 104px);
+  aspect-ratio: 1;
+  padding: 0 0 0 .18em;
+  border: 2px solid var(--spirit-teal);
+  border-radius: 50%;
+  background: #0b1529b8;
+  color: var(--paper);
+  font-size: clamp(24px, 3.4vw, 40px);
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 0 0 8px #9ae8e21f, 0 10px 30px #0008;
+  transition: transform .2s, background .2s, color .2s;
+}
+.trailer-play:hover { transform: translate(-50%, -50%) scale(1.07); background: #1b3352; color: var(--spirit-teal); }
+.trailer-play[hidden] { display: none; }

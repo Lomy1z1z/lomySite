@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="gameplay.css">
   <script defer src="site-content.js"></script>
   <script defer src="demo.js"></script>
+  <script defer src="trailer.js"></script>
   <script type="module" src="anime.js"></script>
 </head>
 <body>
@@ -20,7 +21,7 @@
 <header class="site-header" id="siteHeader">
   <a class="wordmark" href="#home" aria-label="SHAMAGON home"><img src="assets/brand/shamagon-spirit-logo.webp" width="1120" height="373" alt=""></a>
   <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mainNav"><span></span><span></span></button>
-  <nav id="mainNav" aria-label="Main navigation"><a href="#characters">Characters</a><a href="#world">The world</a><a class="nav-download" href="#download">Demo <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 10 7-10 7z"/></svg></a></nav>
+  <nav id="mainNav" aria-label="Main navigation"><a href="#trailer">Trailer</a><a href="#characters">Characters</a><a href="#world">The world</a><a class="nav-download" href="#download">Demo <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 10 7-10 7z"/></svg></a></nav>
 </header>
 <main>
 <section class="game-hero" id="home" aria-labelledby="heroTitle">
@@ -32,8 +33,18 @@
     <p class="game-summary">Match bubbles to unleash your shaman’s attacks. Miss a match and the enemy hits back.</p>
     <div class="game-hero-actions">
       <a class="game-button" href="#download">Browser demo <span aria-hidden="true">↓</span></a>
+      <a class="game-button game-button-ghost trailer-open" href="#trailer">Watch trailer <span aria-hidden="true">▶</span></a>
       <a class="game-link" href="#characters">Meet the shamans <span aria-hidden="true">→</span></a>
     </div>
+  </div>
+</section>
+<section class="trailer-section" id="trailer" aria-labelledby="trailerTitle">
+  <div class="section-heading"><h2 id="trailerTitle">Watch the trailer</h2><p>The shamans in action: bubble battles, their ultimates and the 3D world.</p></div>
+  <div class="trailer-frame">
+    <video class="trailer-video" controls playsinline preload="none" poster="assets/brand/trailer-poster.jpg" width="1920" height="1080">
+      <source src="https://pub-253d7b65c9834b42bca1ab286a1a2e85.r2.dev/trailer/shamagon-trailer-v5.mp4" type="video/mp4">
+    </video>
+    <button class="trailer-play" type="button" aria-label="Play the trailer"><span aria-hidden="true">▶</span></button>
   </div>
 </section>
 <section class="characters-section" id="characters" aria-labelledby="charactersTitle">
@@ -108,6 +119,10 @@
   </div>
 </section>
 </main>
+<dialog class="trailer-dialog" aria-label="SHAMAGON trailer">
+  <button class="trailer-dialog-close" type="button" aria-label="Close the trailer">✕</button>
+  <video class="trailer-dialog-video" controls playsinline preload="none" poster="assets/brand/trailer-poster.jpg" width="1920" height="1080"></video>
+</dialog>
 <footer class="site-footer"><a class="wordmark" href="#home" aria-label="SHAMAGON home"><img src="assets/brand/shamagon-spirit-logo.webp" width="1120" height="373" alt="" loading="lazy"></a><span>© 2026 SHAMAGON · Created by Shlomi Zberlo</span><a href="#home">BACK TO TOP <span aria-hidden="true">↑</span></a></footer>
 <div id="spiritPortal" class="spirit-portal" aria-hidden="true">
   <div class="portal-veil"></div>
