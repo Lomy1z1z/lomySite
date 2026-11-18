@@ -202,3 +202,41 @@
   .world-content h2 { margin-bottom: 15px; }
   .training-feature { grid-template-columns: 1fr; }
 }
+
+/* The hero block: the battle art across the whole block, the copy over its darkened left */
+.game-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 540px);
+  min-height: min(92vh, 880px);
+  background: var(--ink);
+}
+.game-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 58% 42%;
+}
+.game-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, #0b1529c4 0%, #0b152999 18%, #0b152940 33%, #0b152900 46%),
+    linear-gradient(0deg, #0b1529 0%, #0b152900 20%),
+    linear-gradient(180deg, #0b1529aa 0%, #0b152900 18%);
+}
+.game-hero-copy { position: relative; }
+.game-byline, .game-hook, .game-summary { text-shadow: 0 2px 14px #0b1529, 0 0 4px #0b1529, 0 0 30px #0b1529cc; }
+
+@media (max-width: 760px) {
+  /* The art on top, the copy under it */
+  .game-hero { min-height: 0; padding-top: calc(68px + 56.3vw); align-items: start; }
+  .game-hero-bg { inset: 68px 0 auto 0; height: 56.3vw; object-position: center; -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+  .game-hero::before { display: none; }
+}
